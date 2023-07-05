@@ -16,14 +16,14 @@ that normally renders a HTML `<button>` element with enhanced visual styling,
 but which can be configured instead to render an `<a>` element with the
 _appearance_ of a button, e.g.
 
-{/* prettier-ignore-start */}
+<!-- prettier-ignore-start -->
 ```tsx
 {/* Setting `as="a"` unlocks additional `<a>` props such as `href`. */}
 <Button as="a" href="./register">
   Register
 </Button>
 ```
-{/* prettier-ignore-end */}
+<!-- prettier-ignore-end -->
 
 But recently I have noticed the `as` prop—practically synonymous with
 "polymorphic component"—falling out of favor a bit, a few reasons being
@@ -212,19 +212,19 @@ I'll start by offering a glimpse of what the final result will look like from a
 First, our `Button` component will work exactly like a HTML `<button>` element
 by default:
 
-{/* prettier-ignore-start */}
+<!-- prettier-ignore-start -->
 ```tsx
 {/* You can use any combination of HTML `<button>` props. */}
 <Button type="submit" form="registration-form">
   Register
 </Button>;
 ```
-{/* prettier-ignore-end */}
+<!-- prettier-ignore-end -->
 
 Then, when it is necessary to render custom markup or compose `Button` with
 another component, we will be able to pass a function as the child, e.g.
 
-{/* prettier-ignore-start */}
+<!-- prettier-ignore-start -->
 ```tsx
 {/* You can't pass any HTML `<button>` props here. */}
 <Button>
@@ -233,7 +233,7 @@ another component, we will be able to pass a function as the child, e.g.
   ))}
 </Button>
 ```
-{/* prettier-ignore-end */}
+<!-- prettier-ignore-end -->
 
 There's no implicit magic here; but there _is_ more than initially meets the
 eye, so let's dive in.
@@ -259,7 +259,7 @@ Remember, by default, `Button` will match the interface of a standard HTML
 `<button>` element. Alternatively, the client code can provide a render function
 as the child.
 
-{/* prettier-ignore-start */}
+<!-- prettier-ignore-start -->
 ```typescript
 import { ComponentPropsWithoutRef, ComponentType } from "react";
 import { U } from "ts-toolbelt";
@@ -269,7 +269,7 @@ type ButtonProps = U.Strict<
   | { children: ComponentType<ButtonChildProps> }
 >;
 ```
-{/* prettier-ignore-end */}
+<!-- prettier-ignore-end -->
 
 The
 [union type](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types)
@@ -459,7 +459,7 @@ function ifExhausted<T, U>(t: F.Exact<T, {}>, u: U): U {
 This is little more than an identity function: The first argument must be
 exactly `{}`, and the second argument is always returned. Let's put it to work!
 
-{/* prettier-ignore-start */}
+<!-- prettier-ignore-start -->
 ```tsx
 <Button>
   {({ style, ...restProps }) => ifExhausted(restProps, (
@@ -469,7 +469,7 @@ exactly `{}`, and the second argument is always returned. Let's put it to work!
   ))}
 </Button>
 ```
-{/* prettier-ignore-end */}
+<!-- prettier-ignore-end -->
 
 Now, a compiler error will alert us to any props that haven't been destructured.
 Nice! As I mentioned earlier, though, it's still possible to destructure a prop
