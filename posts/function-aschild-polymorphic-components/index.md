@@ -1,5 +1,6 @@
 ---
-title: "Function asChild: A type-safe approach to polymorphic components"
+title: Function asChild
+description: Unraveling the unsound nature of React polymorphic components and looking for a safer approach
 date: 2023-06-19
 tags:
   - TypeScript
