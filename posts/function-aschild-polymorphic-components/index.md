@@ -1,21 +1,107 @@
 ---
 title: Function asChild
-description: Unraveling the unsound nature of React polymorphic components and looking for a safer approach
-date: 2023-06-19
+description:
+  How I use a classic React design pattern to build polymorphic components
+  safely
+published: 2023-06-19
 tags:
   - TypeScript
   - React
 ---
 
 As a design system engineer, my primary goal is to deliver a consistent user
-experience across a range of products. To succeed in this, each component I
-build must be adaptable to many different use cases so that it can be reused
-consistently. One React pattern that has helped me to deliver the required
-flexibility is that of the _polymorphic component_, which offers you direct
-control over its rendered HTML output. A common example is a `Button` component
-that normally renders a HTML `<button>` element with enhanced visual styling,
-but which can be configured instead to render an `<a>` element with the
-_appearance_ of a button, e.g.
+experience across a large number of products. Succeeding in this requires
+consistent reuse of the components I build. Consistent reuse of these components
+requires them to adapt to a wide range of use cases. Otherwise, my clients will
+opt out and roll their own components, typically losing important functionality
+or design details in the process.
+
+My most essential tool for delivering the required flexibility is the notion of
+the _polymorphic component_. Before jumping into code, allow me to explain this
+concept and why it's so useful.
+
+## Polymorphic components
+
+A polymorphic component delivers consistent visual design and functionality in a
+context-sensitive manner as follows:
+
+1. It offers direct control over the rendered markup, allowing developers to
+   [improve accessibility via semantic HTML](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/HTML).
+1. Its appearance and/or behavior can be combined with those of another
+   component.
+
+A `Button` component is the canonical example of component polymorphism: By
+default, it just renders a HTML `<button>` element with some fancy styling, but
+sometimes it makes sense to render an `<a>` element instead (like when a screen
+reader should announce it as a link).
+
+Aside from custom HTML tags, a `Button` might be combined with e.g. a `Link`
+component from a routing framework like
+[React Router](https://reactrouter.com/en/main/components/link) or
+[Next.js](https://nextjs.org/docs/pages/api-reference/components/link)—again,
+bringing the visual design of a `Button` and the functionality of a `Link`
+together into a single element.
+
+In short, the flexible nature of polymorphic components allows a single
+implementation to serve a wider range of use cases. This promotes reuse of UI
+elements, improving code maintainability while delivering a more cohesive user
+experience.
+
+## Other approaches
+
+Over the past few years, two approaches for achieving polymorphic components
+have been widely circulated and discussed within the React community: the `as`
+prop and its "successor" the `asChild` prop. Before reinventing the wheel, let's
+take a quick look.
+
+### The `as` prop
+
+The `as` prop emerged starting around 2018 in popular libraries such as
+[Styled Components](https://styled-components.com/docs/api#as-polymorphic-prop),
+[Material UI](https://mui.com/material-ui/api/button/#props) (under the name
+`component`), and [Chakra UI](https://chakra-ui.com/community/recipes/as-prop).
+Using the `as` prop, the `Button`-as-`<a>` use case described above would look
+something like this:
+
+```tsx
+<Button as="a" href="https://styled-components.com/">
+  Get started
+</Button>
+```
+
+For TypeScript users, the `as` prop can be especially interesting because a
+typical type definition will guard against invalid prop combinations depending
+on the value of the `as` prop. For example, this would not compile since `href`
+is not a valid HTML `<button>` attribute:
+
+```tsx
+<Button as="button" href="https://styled-components.com/">
+  Try me
+</Button>
+```
+
+Circa 2020, the `as` prop was virtually synonymous with the term _polymorphic
+component_. Personally, it has served me well. But over the past year or two, it
+has fallen out of favor a bit for reasons that are beyond the scope of this
+article.
+
+Maybe I'll explain in a future post; but, for now, if you'd like to do your own
+research, [this](https://twitter.com/jjenzz/status/1499301618843586562) is a
+good place to start.)
+
+Suffice to say, while I can't relate to all of the criticisms, I do find
+composability issues in the `as` prop approach, w
+
+Implementing polymorphic components can be a difficult task, especially when
+using TypeScript.
+
+To succeed in this, each component I build must be adaptable to many different
+use cases so that it can be reused consistently. One React pattern that has
+helped me to deliver the required flexibility is that of the _polymorphic
+component_, which offers you direct control over its rendered HTML output. A
+common example is a `Button` component that normally renders a HTML `<button>`
+element with enhanced visual styling, but which can be configured instead to
+render an `<a>` element with the _appearance_ of a button, e.g.
 
 <!-- prettier-ignore-start -->
 ```tsx
