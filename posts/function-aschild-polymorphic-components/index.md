@@ -18,15 +18,16 @@ or design details in the process.
 
 My most essential tool for delivering the required flexibility is the notion of
 the _polymorphic component_. Before jumping into code, allow me to explain this
-concept and why it's so useful.
+important concept and why it's so useful.
 
-## Polymorphic components
+## Introducing polymorphic components
 
 A polymorphic component delivers consistent visual design and functionality in a
 context-sensitive manner as follows:
 
 1. It offers direct control over the rendered markup, allowing developers to
    [improve accessibility via semantic HTML](https://developer.mozilla.org/en-US/docs/Learn/Accessibility/HTML).
+
 1. Its appearance and/or behavior can be combined with those of another
    component.
 
@@ -39,29 +40,30 @@ Aside from custom HTML tags, a `Button` might be combined with e.g. a `Link`
 component from a routing framework like
 [React Router](https://reactrouter.com/en/main/components/link) or
 [Next.js](https://nextjs.org/docs/pages/api-reference/components/link)—again,
-bringing the visual design of a `Button` and the functionality of a `Link`
-together into a single element.
+bringing the visual design of `Button` and the functionality of `Link` together
+into a single element.
 
 In short, the flexible nature of polymorphic components allows a single
 implementation to serve a wider range of use cases. This promotes reuse of UI
 elements, improving code maintainability while delivering a more cohesive user
 experience.
 
-## Other approaches
+## Current approaches
 
 Over the past few years, two approaches for achieving polymorphic components
 have been widely circulated and discussed within the React community: the `as`
-prop and its "successor" the `asChild` prop. Before reinventing the wheel, let's
-take a quick look.
+prop and the `asChild` prop. Before reinventing the wheel, let's take a look at
+these.
 
 ### The `as` prop
 
 The `as` prop emerged starting around 2018 in popular libraries such as
 [Styled Components](https://styled-components.com/docs/api#as-polymorphic-prop),
-[Material UI](https://mui.com/material-ui/api/button/#props) (under the name
-`component`), and [Chakra UI](https://chakra-ui.com/community/recipes/as-prop).
-Using the `as` prop, the `Button`-as-`<a>` use case described above would look
-something like this:
+[Material UI](https://mui.com/material-ui/api/button/#props) (under the
+`component` prop name), and
+[Chakra UI](https://chakra-ui.com/community/recipes/as-prop). Using the `as`
+prop, the button-as-link use case described above would be implemented something
+like this:
 
 ```tsx
 <Button as="a" href="https://styled-components.com/">
@@ -80,20 +82,139 @@ is not a valid HTML `<button>` attribute:
 </Button>
 ```
 
-Circa 2020, the `as` prop was virtually synonymous with the term _polymorphic
-component_. Personally, it has served me well. But over the past year or two, it
-has fallen out of favor a bit for reasons that are beyond the scope of this
-article.
+A couple of years ago, the `as` prop was practically synonymous with the term
+_polymorphic component_, and for good reason. It is widely recognized; it's easy
+to use; and it offers a reasonable degree of type safety, which unfortunately is
+not true of its "successor" (more on that later). But, to be fair, it's not a
+perfect solution.
 
-Maybe I'll explain in a future post; but, for now, if you'd like to do your own
-research, [this](https://twitter.com/jjenzz/status/1499301618843586562) is a
-good place to start.)
+#### Problems with the `as` prop
 
-Suffice to say, while I can't relate to all of the criticisms, I do find
-composability issues in the `as` prop approach, w
+Over the last two years, the `as` prop has been challenged as the de-facto
+standard for polymorphic components on the following points:
 
-Implementing polymorphic components can be a difficult task, especially when
-using TypeScript.
+1. Slow TypeScript performance
+1. Poor type inference
+1. Prop collisions
+
+To be honest, I haven't experienced the first two issues myself; but I _can_
+relate to the third issue, and it is significant.
+
+##### Prop collisions
+
+Consider two polymorphic components: `Highlight`, which contributes a
+configurable background color to an element, and `Outline`, which adds a colored
+outline around an element (also configurable).
+
+![Highlight component example](images/highlight-outline/highlight.png)
+![Outline component example](images/highlight-outline/outline.png)
+
+```tsx
+<Highlight color="yellow">Highlight</Highlight>
+<Outline color="yellow">Outline</Outline>
+```
+
+We can combine the two using the `as` prop.
+
+![Highlight and Outline combination](images/highlight-outline/highlight-outline.png)
+
+```tsx
+<Highlight as={Outline} color="yellow">
+  Highlight + Outline
+</Highlight>
+```
+
+But what if we want a two-tone effect?
+
+![Two-tone effect using the Highlight and Outline components](images/highlight-outline/two-tone.png)
+
+```tsx
+<Highlight as={Outline} color="hotpink" color="lightblue">
+  Highlight + Outline
+</Highlight>
+```
+
+Unfortunately, it isn't possible to achieve this on the basis of the `Highlight`
+and `Outline` components because we can't control each component's `color` prop
+independently. The duplicate `color` prop in the code example simply wouldn't
+compile.
+
+Now let's return for a moment to the monochromatic combination that actually
+worked.
+
+![Highlight and Outline combination](images/highlight-outline/highlight-outline.png)
+
+By default, this renders a generic `<div>` element. But what if we need to
+render a `<button>` element instead?
+
+```tsx
+<Highlight as={Outline} as="button" color="yellow">
+  Highlight + Outline
+</Highlight>
+```
+
+Once again, the duplicate `as` prop wouldn't compile, making it impossible to
+combine the two components _and_ control their rendered HTML at the same time.
+
+In short, the prop collision issue presents two challenges:
+
+1. If two components share a prop name, that prop can't be controlled
+   independently for each component. (Technically, one of the props hides the
+   other's interface—imagine if they have different types!)
+
+2. Composition is limited to two components—unless you need a custom HTML tag,
+   in which case composition isn't possible because the `as` prop is already
+   used for that purpose.
+
+### The `asChild` prop
+
+The `asChild` prop, popularized by [Radix](https://radix-ui.com), addresses the
+issues of the `as` prop by allowing the child element to determine how the
+component is rendered. Using `asChild`, here is how the button-as-link use case
+I introduced earlier would be implemented:
+
+```tsx
+<Button asChild>
+  <a href="https://radix-ui.com/">Get started</a>
+</Button>
+```
+
+Now the TypeScript performance and type inference should be much more
+predictable. To the compiler, this just looks a simple HTML `<a>` element nested
+as the child of some `<Button>` element.
+
+And because `<Button>` and `<a>` are now separate JSX elements, a given prop can
+be set explicitly on either element; thus, prop collisions are eliminated.
+
+Problems solved, right?
+
+Well, yes—but is it worth the problems created? Let's discuss!
+
+#### Problems with the `asChild` prop
+
+Earlier, we saw that the `as` prop has one serious composability issue along
+with some possible TypeScript-related inconveniences. On the other hand, the
+`asChild` prop, promoted as the successor to the `as` prop, is far from an
+obvious improvement when considering several new issues it brings to the table.
+
+> **Note** Before continuing, allow me to define a term _prop forwarding_. I
+> will use this simply to describe a set of props being passed by the
+> polymorphic "parent" component to the "child" element, regardless of where
+> each prop originated.
+
+##### No contract between parent and child
+
+##### Excess props
+
+The first problem is that `asChild` indiscriminately forwards all props to the
+child, regardless of whether they are relevant or even valid. This easily
+results in invalid HTML.
+
+The first problem is that `asChild`'s prop forwarding scheme easily produces
+invalid markup. Consider the simple case of a `type` prop added to the parent
+`<Button>` element:
+
+---
 
 To succeed in this, each component I build must be adaptable to many different
 use cases so that it can be reused consistently. One React pattern that has
@@ -119,19 +240,13 @@ But recently I have noticed the `as` prop—practically synonymous with
 1. poor type inference, and
 1. conflicting prop names.
 
-Its trendy "successor", the `asChild` prop, addresses these issues by allowing
-the child element to determine how the component is rendered. Using `asChild`,
-the code above would be rewritten as:
+Its trendy "successor",
 
 ```tsx
 <Button asChild>
   <a href="./register">Register</a>
 </Button>
 ```
-
-Now the TypeScript performance and type inference should be much more
-predictable, since the custom element type is defined by a simple HTML `<a>`
-element.
 
 And because `<Button>` and `<a>` are now separate JSX elements, a given prop can
 be set explicitly on either element; thus, prop conflicts are eliminated.
