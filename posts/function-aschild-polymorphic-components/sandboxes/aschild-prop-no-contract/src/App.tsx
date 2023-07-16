@@ -1,6 +1,6 @@
 import "./global.css";
 
-import { ReactElement, ReactNode, useState } from "react";
+import { CSSProperties, ReactElement, ReactNode, useState } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { U } from "ts-toolbelt";
 
@@ -78,13 +78,14 @@ type LinkProps = {
  * know this is to be familiar with the implementation details of that
  * component.
  */
+// prettier-ignore
 function Link({
   href,
   children,
-}: // style,
-// onMouseEnter,
-// onMouseLeave
-LinkProps) {
+  // style,
+  // onMouseEnter,
+  // onMouseLeave,
+}: LinkProps) {
   return (
     <a
       href={href}
