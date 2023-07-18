@@ -261,8 +261,57 @@ To compare for yourself, have a look at
 ##### No control over prop forwarding
 
 `asChild` assumes a straightforward 1-to-1 mapping between the props forwarded
-from the "parent" and the props accepted by the "child". But, as the `disabled`
-attribute shows, this is not always the case.
+from the "parent" and the props accepted by the "child". But, as the previous
+example shows, that may be a bit too optimistic.
+
+A reasonable implementation for a "disabled" `<a>` element might look something
+like this:
+
+```tsx
+<a
+  href="https://react.dev"
+  className="disabled"
+  aria-disabled="true"
+  onClick={e => {
+    e.preventDefault();
+  }}>
+  Get started
+</a>
+```
+
+In the button-as-link context, the `disabled` prop forwarded from the `Button`
+"parent" would be represented in three distinct "child" props: `className`,
+`aria-disabled`, and `onClick`. Because `asChild` hides its prop forwarding
+logic, it isn't possible to achieve this—instead, you'll be stuck with that
+invalid `disabled` attribute in the resulting HTML, as discussed earlier.
+
+##### Contraindicated use of `cloneElement`
+
+The implementation of the `asChild` prop (Radix's
+[`Slot` component](https://github.com/radix-ui/primitives/blob/eca6babd188df465f64f23f3584738b85dba610e/packages/react/slot/src/Slot.tsx#L64-L67)),
+utilizes the `cloneElement` function. However, the
+[React docs](https://react.dev/reference/react/cloneElement) warn that "using
+`cloneElement` is uncommon and can lead to fragile code" while "[making] it hard
+to tell how the data flows through your app". The React documentation continues
+on to
+[recommend the render prop as a "more explicit" alternative](https://react.dev/reference/react/cloneElement#alternatives)
+where "you can clearly trace" the props.
+
+#### Final thoughts on the `asChild` prop
+
+To its credit, the `asChild` prop has raised awareness about some issues with
+the `as` prop, and it _has_, technically, solved those issues. It has also
+reminded us that the `as` prop isn't the only way to do polymorphic components.
+
+But if I had to describe it in one word, that would be _oversimplification_.
+TypeScript performance, type inference, and prop collisions are all "solved" by
+pretending that a single element is actually two, the "parent" and the "child".
+Behind the scenes, the "parent" component produces no HTML element of its own,
+but instead mutates the "child" element, thwarting the type checker (as in the
+disabled button-as-link example above) and injecting any number of props,
+whether compatible or not, in a manner you can neither see nor control.
+
+## Introducing _Function asChild_
 
 ---
 
