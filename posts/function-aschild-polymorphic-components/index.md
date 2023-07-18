@@ -33,7 +33,7 @@ context-sensitive manner as follows:
 
 A `Button` component is the canonical example of component polymorphism: By
 default, it just renders a HTML `<button>` element with some fancy styling, but
-sometimes it makes sense to render an `<a>` element instead (like when a screen
+it can be configured to render an `<a>` element instead (like when a screen
 reader should announce it as a link).
 
 Aside from custom HTML tags, a `Button` might be combined with e.g. a `Link`
@@ -110,8 +110,10 @@ outline around an element (also configurable).
 ![Outline component example](images/highlight-outline/outline.png)
 
 ```tsx
-<Highlight color="yellow">Highlight</Highlight>
-<Outline color="yellow">Outline</Outline>
+<>
+  <Highlight color="yellow">Highlight</Highlight>
+  <Outline color="yellow">Outline</Outline>
+</>
 ```
 
 You can combine the two using the `as` prop.
@@ -189,11 +191,11 @@ introduced earlier would be implemented:
 ```
 
 Now the TypeScript performance and type inference should be much more
-predictable. To the compiler, this just looks a simple HTML `<a>` element nested
+predictable. To the compiler, this just looks a plain HTML `<a>` element nested
 as the child of some `<Button>` element.
 
-And because `<Button>` and `<a>` are now separate JSX elements, a given prop can
-be set explicitly on either element; thus, prop collisions are eliminated.
+And because `<Button>` and `<a>` are now separate elements, a given prop can be
+set explicitly on either one; thus, prop collisions are eliminated.
 
 Problems solved, right?
 
@@ -203,8 +205,8 @@ Well, yes—but what about the problems _created_?
 
 Earlier, I showed that the `as` prop has one serious composability issue along
 with some possible TypeScript-related inconveniences. On the other hand, the
-`asChild` prop, promoted as the successor to the `as` prop, is not such an
-obvious improvement when considering its own downsides.
+`asChild` prop, promoted as the `as` prop successor, is not such an obvious
+improvement when considering its unique downsides.
 
 ##### No contract between parent and child
 
@@ -239,11 +241,18 @@ with an `<a>` element.
 <a href="https://react.dev" disabled>Get started</a>
 ```
 
-On the other hand, each of the following would result in a type error:
+On the other hand, each of the following would result in a type error as
+expected.
 
 ```tsx
-<a href="https://react.dev" disabled>Disabled link?</a>
-<Button as="a" href="https://react.dev" disabled>Disabled link?</Button>
+<>
+  <a href="https://react.dev" disabled>
+    Disabled link?
+  </a>
+  <Button as="a" href="https://react.dev" disabled>
+    Disabled link?
+  </Button>
+</>
 ```
 
 To compare for yourself, have a look at

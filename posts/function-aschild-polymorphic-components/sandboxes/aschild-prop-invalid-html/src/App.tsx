@@ -14,7 +14,7 @@ export default function App() {
         gap: 16,
       }}>
       <a href="https://react.dev" style={demoButtonStyle} disabled>
-        Plain <code>&gt;a&gt;</code> button - type error
+        Plain <code>&lt;a&gt;</code> button - type error
       </a>
       <AsButton as="a" href="https://react.dev" disabled>
         <code>as</code> button - type error
