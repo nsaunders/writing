@@ -16,11 +16,11 @@ requires them to adapt to a wide range of use cases. Otherwise, my clients will
 opt out and roll their own components, typically losing important functionality
 or design details in the process.
 
-My most essential tool for delivering the required flexibility is the notion of
-the _polymorphic component_. Before jumping into code, allow me to explain this
-important concept and why it's so useful.
+My most essential technical tool for delivering the required flexibility is the
+notion of the _polymorphic component_. Before jumping into code, allow me to
+explain this important concept and why it's so useful.
 
-## Introducing polymorphic components
+## What are polymorphic components?
 
 A polymorphic component delivers consistent visual design and functionality in a
 context-sensitive manner as follows:
@@ -66,7 +66,7 @@ prop, the button-as-link use case described above would be implemented something
 like this:
 
 ```tsx
-<Button as="a" href="https://styled-components.com/">
+<Button as="a" href="https://react.dev">
   Get started
 </Button>
 ```
@@ -77,8 +77,8 @@ on the value of the `as` prop. For example, this would not compile since `href`
 is not a valid HTML `<button>` attribute:
 
 ```tsx
-<Button as="button" href="https://styled-components.com/">
-  Try me
+<Button as="button" href="https://react.dev">
+  Get started
 </Button>
 ```
 
@@ -114,7 +114,7 @@ outline around an element (also configurable).
 <Outline color="yellow">Outline</Outline>
 ```
 
-We can combine the two using the `as` prop.
+You can combine the two using the `as` prop.
 
 ![Highlight and Outline combination](images/highlight-outline/highlight-outline.png)
 
@@ -124,7 +124,7 @@ We can combine the two using the `as` prop.
 </Highlight>
 ```
 
-But what if we want a two-tone effect?
+But what if you want a two-tone effect?
 
 ![Two-tone effect using the Highlight and Outline components](images/highlight-outline/two-tone.png)
 
@@ -135,7 +135,7 @@ But what if we want a two-tone effect?
 ```
 
 Unfortunately, it isn't possible to achieve this on the basis of the `Highlight`
-and `Outline` components because we can't control each component's `color` prop
+and `Outline` components because you can't control each component's `color` prop
 independently. The duplicate `color` prop in the code example simply wouldn't
 compile.
 
@@ -144,7 +144,7 @@ worked.
 
 ![Highlight and Outline combination](images/highlight-outline/highlight-outline.png)
 
-By default, this renders a generic `<div>` element. But what if we need to
+By default, this renders a generic `<div>` element. But what if you need to
 render a `<button>` element instead?
 
 ```tsx
@@ -166,16 +166,25 @@ In short, the prop collision issue presents two challenges:
    in which case composition isn't possible because the `as` prop is already
    used for that purpose.
 
+#### Final thoughts on the `as` prop
+
+For the most part, the `as` prop has served me well; but I'm concerned about the
+potential for clashing props to create defects much more insidious than the one
+demonstrated above by the `color` prop. Moreover, I'm really not happy having to
+choose between component composition and semantic markup. Finally, the ability
+to compose three or more components together could prove interesting, enabling a
+higher degree of reuse than the `as` prop currently allows.
+
 ### The `asChild` prop
 
 The `asChild` prop, popularized by [Radix](https://radix-ui.com), addresses the
-issues of the `as` prop by allowing the child element to determine how the
-component is rendered. Using `asChild`, here is how the button-as-link use case
-I introduced earlier would be implemented:
+issues of the `as` prop by allowing the component's child element to determine
+how it is rendered. Using `asChild`, here is how the button-as-link use case I
+introduced earlier would be implemented:
 
 ```tsx
 <Button asChild>
-  <a href="https://radix-ui.com/">Get started</a>
+  <a href="https://react.dev">Get started</a>
 </Button>
 ```
 
@@ -188,31 +197,63 @@ be set explicitly on either element; thus, prop collisions are eliminated.
 
 Problems solved, right?
 
-Well, yes—but is it worth the problems created? Let's discuss!
+Well, yes—but what about the problems _created_?
 
 #### Problems with the `asChild` prop
 
-Earlier, we saw that the `as` prop has one serious composability issue along
+Earlier, I showed that the `as` prop has one serious composability issue along
 with some possible TypeScript-related inconveniences. On the other hand, the
-`asChild` prop, promoted as the successor to the `as` prop, is far from an
-obvious improvement when considering several new issues it brings to the table.
-
-> **Note** Before continuing, allow me to define a term _prop forwarding_. I
-> will use this simply to describe a set of props being passed by the
-> polymorphic "parent" component to the "child" element, regardless of where
-> each prop originated.
+`asChild` prop, promoted as the successor to the `as` prop, is not such an
+obvious improvement when considering its own downsides.
 
 ##### No contract between parent and child
 
-##### Excess props
+A component implementing the `asChild` prop accepts any type of React element as
+"child", forwarding props without regard to whether that type of element is
+designed to accept them. That means, when implementing the "child" component,
+you must consider the private implementation details of the "parent"
+component—and hope they don't change, since the TypeScript compiler can't
+guarantee compatibility.
 
-The first problem is that `asChild` indiscriminately forwards all props to the
-child, regardless of whether they are relevant or even valid. This easily
-results in invalid HTML.
+To see the problem firsthand, check out
+[this demo](https://githubbox.com/nsaunders/writing/tree/wip/function-aschild-polymorphic-components/posts/function-aschild-polymorphic-components/sandboxes/aschild-prop-no-contract).
 
-The first problem is that `asChild`'s prop forwarding scheme easily produces
-invalid markup. Consider the simple case of a `type` prop added to the parent
-`<Button>` element:
+##### Invalid HTML
+
+`asChild`'s prop forwarding scheme can easily produce invalid markup. Look no
+further than the button-as-link use case for evidence. Consider what happens
+when you disable the button.
+
+```tsx
+<Button asChild disabled>
+  <a href="https://react.dev">Get started</a>
+</Button>
+```
+
+The resulting HTML would look essentially like the following—with no TypeScript
+error to alert you that the `disabled` prop
+[is not compatible](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes)
+with an `<a>` element.
+
+```html
+<a href="https://react.dev" disabled>Get started</a>
+```
+
+On the other hand, each of the following would result in a type error:
+
+```tsx
+<a href="https://react.dev" disabled>Disabled link?</a>
+<Button as="a" href="https://react.dev" disabled>Disabled link?</Button>
+```
+
+To compare for yourself, have a look at
+[this demo](https://githubbox.com/nsaunders/writing/tree/wip/function-aschild-polymorphic-components/posts/function-aschild-polymorphic-components/sandboxes/aschild-prop-invalid-html).
+
+##### No control over prop forwarding
+
+`asChild` assumes a straightforward 1-to-1 mapping between the props forwarded
+from the "parent" and the props accepted by the "child". But, as the `disabled`
+attribute shows, this is not always the case.
 
 ---
 
