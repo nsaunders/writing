@@ -9,6 +9,9 @@ tags:
   - React
 ---
 
+> _Everything should be made as simple as possible, but not simpler._<br/>
+> —Albert Einstein
+
 As a design system engineer, my primary goal is to deliver a consistent user
 experience across a large number of products. Succeeding in this requires
 consistent reuse of the components I build. Consistent reuse of these components
@@ -39,9 +42,9 @@ reader should announce it as a link).
 Aside from custom HTML tags, a `Button` might be combined with e.g. a `Link`
 component from a routing framework like
 [React Router](https://reactrouter.com/en/main/components/link) or
-[Next.js](https://nextjs.org/docs/pages/api-reference/components/link)—again,
-bringing the visual design of `Button` and the functionality of `Link` together
-into a single element.
+[Next.js](https://nextjs.org/docs/pages/api-reference/components/link)—bringing
+the visual design of `Button` and the functionality of `Link` together into a
+single element.
 
 In short, the flexible nature of polymorphic components allows a single
 implementation to serve a wider range of use cases. This promotes reuse of UI
@@ -103,11 +106,10 @@ relate to the third issue, and it is significant.
 ##### Prop collisions
 
 Consider two polymorphic components: `Highlight`, which contributes a
-configurable background color to an element, and `Outline`, which adds a colored
-outline around an element (also configurable).
+configurable background color to an element, and `Outline`, which similarly adds
+a colored outline around an element.
 
-![Highlight component example](images/highlight-outline/highlight.png)
-![Outline component example](images/highlight-outline/outline.png)
+![Highlight and Outline component examples](images/highlight-outline/highlight-outline.png)
 
 ```tsx
 <>
@@ -118,7 +120,7 @@ outline around an element (also configurable).
 
 You can combine the two using the `as` prop.
 
-![Highlight and Outline combination](images/highlight-outline/highlight-outline.png)
+![Highlight and Outline combination](images/highlight-outline/combo-monochrome.png)
 
 ```tsx
 <Highlight as={Outline} color="yellow">
@@ -128,7 +130,7 @@ You can combine the two using the `as` prop.
 
 But what if you want a two-tone effect?
 
-![Two-tone effect using the Highlight and Outline components](images/highlight-outline/two-tone.png)
+![Two-tone effect using the Highlight and Outline components](images/highlight-outline/combo-two-tone.png)
 
 ```tsx
 <Highlight as={Outline} color="hotpink" color="lightblue">
@@ -142,9 +144,9 @@ independently. The duplicate `color` prop in the code example simply wouldn't
 compile.
 
 Now let's return for a moment to the monochromatic combination that actually
-worked.
+works.
 
-![Highlight and Outline combination](images/highlight-outline/highlight-outline.png)
+![Highlight and Outline combination](images/highlight-outline/combo-monochrome.png)
 
 By default, this renders a generic `<div>` element. But what if you need to
 render a `<button>` element instead?
@@ -190,14 +192,14 @@ introduced earlier would be implemented:
 </Button>
 ```
 
-Now the TypeScript performance and type inference should be much more
-predictable. To the compiler, this just looks a plain HTML `<a>` element nested
-as the child of some `<Button>` element.
+To the compiler, this just looks a plain HTML `<a>` element nested as the child
+of some `<Button>` element. This one weird trick should make the TypeScript
+performance and type inference much more predictable.
 
 And because `<Button>` and `<a>` are now separate elements, a given prop can be
 set explicitly on either one; thus, prop collisions are eliminated.
 
-Problems solved, right?
+Problem(s) solved, right?
 
 Well, yes—but what about the problems _created_?
 
@@ -206,16 +208,15 @@ Well, yes—but what about the problems _created_?
 Earlier, I showed that the `as` prop has one serious composability issue along
 with some possible TypeScript-related inconveniences. On the other hand, the
 `asChild` prop, promoted as the `as` prop successor, is not such an obvious
-improvement when considering its unique downsides.
+improvement when considering a few other aspects.
 
 ##### No contract between parent and child
 
-A component implementing the `asChild` prop accepts any type of React element as
-"child", forwarding props without regard to whether that type of element is
-designed to accept them. That means, when implementing the "child" component,
-you must consider the private implementation details of the "parent"
-component—and hope they don't change, since the TypeScript compiler can't
-guarantee compatibility.
+A component implementing the `asChild` prop accepts any element as "child",
+forwarding props without regard to whether that type of element is designed to
+accept them. That means, when implementing the "child" component, you must
+consider the private implementation details of the "parent" component—and hope
+they don't change, since the TypeScript compiler can't guarantee compatibility.
 
 To see the problem firsthand, check out
 [this demo](https://githubbox.com/nsaunders/writing/tree/wip/function-aschild-polymorphic-components/posts/function-aschild-polymorphic-components/sandboxes/aschild-prop-no-contract).
@@ -241,7 +242,7 @@ with an `<a>` element.
 <a href="https://react.dev" disabled>Get started</a>
 ```
 
-On the other hand, each of the following would result in a type error as
+On the other hand, each of the following _would_ result in a type error as
 expected.
 
 ```tsx
@@ -299,19 +300,311 @@ where "you can clearly trace" the props.
 
 #### Final thoughts on the `asChild` prop
 
+Over the years, I've used many technologies that initially appeared to make
+things easier but eventually taught me that they were merely hiding complexity,
+rather than eliminating it. Unfortunately, the `asChild` prop seems to fit that
+category.
+
+It solves the problems of the `as` prop by pretending that one element is
+actually two. The type checker has no knowledge of `asChild`'s implicit magic
+and is powerless to prevent the "parent" component from injecting any number of
+props into the "child" element, whether compatible or not.
+
+The side effects of this design might include tight coupling between "parent"
+and "child" components, whose implementation details must line up without
+compiler help; invalid HTML; and incomplete functionality, particularly in the
+case of a "child" component whose code you don't control (e.g. a third-party
+`Link` component). Moreover, the React docs warn that `asChild`'s use of
+`cloneElement` "makes it harder to trace the data flow"
+
 To its credit, the `asChild` prop has raised awareness about some issues with
 the `as` prop, and it _has_, technically, solved those issues. It has also
 reminded us that the `as` prop isn't the only way to do polymorphic components.
 
-But if I had to describe it in one word, that would be _oversimplification_.
-TypeScript performance, type inference, and prop collisions are all "solved" by
-pretending that a single element is actually two, the "parent" and the "child".
-Behind the scenes, the "parent" component produces no HTML element of its own,
-but instead mutates the "child" element, thwarting the type checker (as in the
-disabled button-as-link example above) and injecting any number of props,
-whether compatible or not, in a manner you can neither see nor control.
-
 ## Introducing _Function asChild_
+
+After realizing the many pitfalls of the `as` and `asChild` props, I began the
+search for a safer and more flexible approach to polymorphic components. I'm
+happy to report that, rather than inventing something new, I discovered an
+approach that builds upon an established React pattern dating back to at least
+2016, a [render prop](https://www.patterns.dev/posts/render-props-pattern)
+variant known as
+[Function as Child Component](https://www.merrickchristensen.com/articles/function-as-child-components/).
+
+### A quick preview
+
+Before we dive into the implementation, I'd like to offer a glimpse of what
+_Function asChild_ looks like from a "client code" perspective. Let's return to
+the polymorphic `Button` once again.
+
+By default, the `Button` component provides the same interface as the HTML
+`button` tag, along with any additional props.
+
+```tsx
+<Button type="submit" form="loginForm" variant="primary">
+  Submit
+</Button>
+```
+
+When you want to render a different type of element, you pass a render function
+as child.
+
+```tsx
+<Button variant="primary">
+  {({ disabled, style, ...restProps }) =>
+    exhausted(restProps) && (
+      <a
+        href="https://react.dev"
+        aria-disabled={disabled}
+        onClick={e => {
+          disabled && e.stopPropagation();
+        }}
+        style={{
+          ...style,
+          ...(disabled ? { opacity: 0.5 } : undefined),
+        }}>
+        Get started
+      </a>
+    )
+  }
+</Button>
+```
+
+If you squint a little bit, you might recognize that this JSX structure actually
+resembles its `asChild` "equivalent". However, since the child is a render
+function rather than an element, this solution avoids implicit magic, doesn't
+break the type checker, and produces valid HTML.
+
+If you've seen render props before, you might have a pretty good idea of what's
+going on here. But it's easy to miss some essential details of this approach
+without walking through its implementation and usage. So, with that, let's get
+started.
+
+### Polymorphic component implementation
+
+The first step is to define the interface between the `Button` component and the
+render function. I usually refer to this as the _forward props_. For a simple
+component whose scope is limited to visual styling, often this will be limited
+to a single `style` or `className` prop.
+
+```tsx
+export type ButtonForwardProps = {
+  className?: string;
+};
+```
+
+Next, let's define the `Button` props. The union type forces the client code to
+choose between the default HTML `button` tag interface and the function-as-child
+interface. The `variant` prop is available in either case.
+
+```tsx
+import { ComponentProps, FunctionComponent } from "react";
+import { U } from "ts-toolbelt";
+
+export type ButtonProps = U.Strict<
+  ComponentProps<"button"> | FunctionComponent<ButtonForwardProps>
+> & {
+  variant?: "primary" | "secondary";
+};
+```
+
+After defining the prop types, the next step is to set up the `Button` as a
+[ref-forwarding](https://react.dev/reference/react/forwardRef) function
+component. The ref forwarding is useful for the default case of a HTML
+`<button>`.
+
+```tsx
+import { ComponentType, forwardRef } from "react";
+
+export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
+  function Button(
+    { children, className = "", variant = "secondary", ...restProps },
+    ref,
+  ) {
+    // TODO
+  },
+) as ComponentType<ButtonProps>;
+```
+
+The implementation begins with the `forwardProps` object, which will include a
+dynamic `className` based on the incoming `variant` prop value.
+
+Then, it determines whether children is a render function:
+
+1. If so, then it calls that function, passing `forwardProps` as the argument,
+   and returns the result.
+2. Otherwise, `children` is simply the button content. Return a `<button>`
+   element, first spreading `forwardProps`, followed by `restProps` (any HTML
+   button props that might have been provided)—and, finally, don't forget to
+   forward `ref` and `children`.
+
+```tsx
+import { ComponentType, forwardRef } from "react";
+import { isRenderFunction } from "render-prop";
+
+export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
+  function Button(
+    { children, className = "", variant = "secondary", ...restProps },
+    ref,
+  ) {
+    const forwardProps: ButtonForwardProps = {
+      className: `button button-${variant} ${className}`,
+    };
+
+    return isRenderFunction(children) ? (
+      children(forwardProps)
+    ) : (
+      <button {...forwardProps} {...restProps} ref={ref}>
+        {children}
+      </button>
+    );
+  },
+) as ComponentType<ButtonProps>;
+```
+
+That's all it takes to implement the polymorphic `Button` component!
+
+Due to some quirks of TypeScript, however, how you _use_ the component can make
+a significant difference in terms of type safety. So, to learn how to use it in
+the most effective way, read on.
+
+### Polymorphic component usage
+
+At this point, we actually have a working polymorphic component. And here is how
+most people (myself included) would be inclined to use it:
+
+```tsx
+<Button variant="secondary">
+  {props => (
+    <a href="./home" {...props}>
+      Cancel
+    </a>
+  )}
+</Button>
+```
+
+Unfortunately, TypeScript doesn't work as expected sometimes, and the prop
+spread is one such case. Due to a long-standing
+[issue](https://github.com/Microsoft/TypeScript/issues/29883), excess props
+don't produce a compiler error.
+
+You won't love the workaround, but hopefully you'll appreciate its effectiveness
+in preventing prop forwarding mistakes.
+
+#### Avoiding the spread
+
+When in doubt, the best way to cope with the prop spread's unsound nature is to
+avoid it entirely. That means fully destructuring the props and forwarding them
+individually.
+
+```tsx
+<Button variant="secondary">
+  {({ className }) => (
+    <a href="./home" className={className}>
+      Cancel
+    </a>
+  )}
+</Button>
+```
+
+But even this has its pitfalls:
+
+1. **Forgotten props**: It's easy to forget to destructure some of the props.
+   Even if you account for all of them initially, additional props could be
+   added to the `ButtonForwardProps` interface in the future.
+
+2. **Unused props**: Similarly, it's easy to forget to actually forward some of
+   the props, even if you remembered to destructure them.
+
+Fortunately, each of these problems has a solution.
+
+#### Exhaustiveness check
+
+Let's make a a small change by adding `...restProps` to the prop-destructuring
+expression.
+
+```tsx
+<Button>
+  {({ className, ...restProps }) => (
+    <a href="./home" className={className}>
+      Cancel
+    </a>
+  )}
+</Button>
+```
+
+If you've destructured all of the props as intended, `restProps` will be an
+empty object, i.e. `{}`. You can assert this with the `exhausted` function,
+which produces a TypeScript error when called with a non-empty object.
+
+```tsx
+import { exhausted } from "render-prop";
+
+<Button>
+  {({ className, ...restProps }) => exhausted(restProps) && (
+    <a href="./home" className={className}>
+      Cancel
+    </a>
+  ))}
+</Button>
+```
+
+For example, here's what happens if you forget about the `className` prop:
+
+TODO
+
+As I mentioned earlier, it's still possible to destructure a prop and forget to
+forward it. Next, I'll show you an additional measure to prevent this common
+mistake.
+
+#### Unused prop check
+
+In general, all of the props passed to a render function should actually be used
+in some way; otherwise, aspects of the component's appearance or behavior might
+be lost. Since the `exhausted` function already guarantees that the props object
+is fully destructured, all that's left is to ensure that none of these props are
+unused.
+
+For this, I simply recommend the ESLint rule
+[`@typescript-eslint/no-unused-vars`](https://typescript-eslint.io/rules/no-unused-vars/).
+
+For example, here's what happens if you forget to forward the `className` prop:
+
+TODO
+
+If you aren't already using ESLint, see
+[typescript-eslint's Getting Started guide](https://typescript-eslint.io/getting-started)
+for more information on how to configure your project.
+
+### Reviewing the solution
+
+Now that you've seen how to implement and use the Function asChild approach for
+polymorphic components, let's consider its relative advantages:
+
+1. Predictable TypeScript performance and type inference
+
+1. Prop collision avoidance
+
+1. High degree of type safety
+
+1. Transparent prop forwarding scheme that you control
+
+1. Valid HTML output
+
+1. Ability to compose three or more components
+
+1. Loose coupling between components
+
+Compared to the `as` and `asChild` props, Function asChild offers a more
+flexible and far safer approach to polymorphic components.
+
+What's the catch?
+
+Some would call a render function—even an _unsafe_ render function that uses the
+prop spread—"boilerplate" in comparison to the "convenience" of implicitly
+mutating elements behind the scenes.
+
+Honestly, they misinterpret _thoroughness and precision_ as _verbosity_.
 
 ---
 
