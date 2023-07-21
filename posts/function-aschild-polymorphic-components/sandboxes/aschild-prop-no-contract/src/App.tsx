@@ -103,12 +103,12 @@ export default function App() {
     <div style={{ display: "inline-flex", gap: 16, alignItems: "center" }}>
       <Button asChild>
         <a href="https://react.dev">
-          Standard <code>&lt;a&gt;</code> element
+          Standard <code>&lt;a&gt;</code> element - works
         </a>
       </Button>
       <Button asChild>
         <Link href="https://react.dev">
-          Custom <code>&lt;Link&gt;</code> element
+          Custom <code>&lt;Link&gt;</code> element - broken
         </Link>
       </Button>
     </div>

@@ -14,14 +14,15 @@ export default function App() {
         gap: 16,
       }}>
       <a href="https://react.dev" style={demoButtonStyle} disabled>
-        Plain <code>&lt;a&gt;</code> button - type error
+        disabled <code>&lt;a&gt;</code> (plain) - type error
       </a>
       <AsButton as="a" href="https://react.dev" disabled>
-        <code>as</code> button - type error
+        disabled <code>&lt;a&gt;</code> (via <code>as</code> prop) - type error
       </AsButton>
-      <AsChildButton asChild>
+      <AsChildButton asChild disabled>
         <a href="https://react.dev">
-          <code>asChild</code> button - no error
+          disabled <code>&lt;a&gt;</code> (via <code>asChild</code> prop) - no
+          type error
         </a>
       </AsChildButton>
     </div>

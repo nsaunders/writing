@@ -248,10 +248,10 @@ expected.
 ```tsx
 <>
   <a href="https://react.dev" disabled>
-    Disabled link?
+    Get started
   </a>
   <Button as="a" href="https://react.dev" disabled>
-    Disabled link?
+    Get started
   </Button>
 </>
 ```
