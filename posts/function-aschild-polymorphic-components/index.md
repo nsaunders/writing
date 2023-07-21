@@ -398,14 +398,17 @@ choose between the default HTML `button` tag interface and the function-as-child
 interface. The `variant` prop is available in either case.
 
 ```tsx
-import { ComponentProps, FunctionComponent } from "react";
+import { ComponentProps, ReactElement } from "react";
 import { U } from "ts-toolbelt";
 
 export type ButtonProps = U.Strict<
-  ComponentProps<"button"> | FunctionComponent<ButtonForwardProps>
-> & {
-  variant?: "primary" | "secondary";
-};
+  (
+    | ComponentProps<"button">
+    | { children: (forwardProps: ForwardProps) => ReactElement }
+  ) & {
+    variant?: "primary" | "secondary";
+  }
+>;
 ```
 
 After defining the prop types, the next step is to set up the `Button` as a
@@ -442,7 +445,6 @@ Then, it checks whether `children` is a render function:
 
 ```tsx
 import { ComponentType, forwardRef } from "react";
-import { isRenderFunction } from "render-prop";
 
 export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
   function Button(
@@ -453,7 +455,7 @@ export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
       className: `button button-${variant} ${className}`,
     };
 
-    return isRenderFunction(children) ? (
+    return typeof children === "function" ? (
       children(forwardProps)
     ) : (
       <button {...forwardProps} {...restProps} ref={ref}>
@@ -540,8 +542,6 @@ empty object, i.e. `{}`. You can assert this with the `exhausted` function,
 which produces a TypeScript error when called with a non-empty object.
 
 ```tsx
-import { exhausted } from "render-prop";
-
 <Button variant="primary">
   {({ className, ...restProps }) => exhausted(restProps) && (
     <a href="https://react.dev" className={className}>
@@ -549,6 +549,11 @@ import { exhausted } from "render-prop";
     </a>
   ))}
 </Button>
+
+// Keep this somewhere like a `util.ts` module.
+function exhausted(x: Record<any, never>) {
+  return true as const;
+}
 ```
 
 For example, here's what happens if you forget about the `className` prop:
@@ -578,6 +583,14 @@ TODO
 If you aren't already using ESLint, see
 [typescript-eslint's Getting Started guide](https://typescript-eslint.io/getting-started)
 for more information on how to configure your project.
+
+### Interactive demos
+
+I invite you to experience Function asChild through a couple of code demos I've
+prepared:
+
+- [Polymorphic `Button`](https://githubbox.com/nsaunders/writing/tree/wip/function-aschild-polymorphic-components/posts/function-aschild-polymorphic-components/sandboxes/function-aschild-button)
+- [Multiple-component composition](https://githubbox.com/nsaunders/writing/tree/wip/function-aschild-polymorphic-components/posts/function-aschild-polymorphic-components/sandboxes/function-aschild-composition)
 
 ### Reviewing the solution
 
