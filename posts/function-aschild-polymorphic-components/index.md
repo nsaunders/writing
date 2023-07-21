@@ -557,7 +557,7 @@ function exhausted(x: Record<any, never>) {
 
 For example, here's what happens if you forget about the `className` prop:
 
-TODO
+![A TypeScript error surfaced when the props are not fully destructured](images/editor-help/not-exhausted.png)
 
 As I mentioned earlier, it's still possible to destructure a prop and forget to
 forward it. Next, I'll show you an additional measure to prevent this common
@@ -577,7 +577,7 @@ For this, I simply recommend the ESLint rule
 With this rule enabled, here's what happens if you forget to forward the
 `className` prop:
 
-TODO
+![An ESLint error showing that one of the props is unused](images/editor-help/unused-prop.png)
 
 If you aren't already using ESLint, see
 [typescript-eslint's Getting Started guide](https://typescript-eslint.io/getting-started)
