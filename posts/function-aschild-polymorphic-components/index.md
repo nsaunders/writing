@@ -429,7 +429,7 @@ export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
 The implementation begins with the `forwardProps` object, which will include a
 dynamic `className` based on the incoming `variant` prop value.
 
-Then, it determines whether children is a render function:
+Then, it determines whether `children` is a render function:
 
 1. If so, then it calls that function, passing `forwardProps` as the argument,
    and returns the result.
