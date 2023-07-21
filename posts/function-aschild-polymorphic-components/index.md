@@ -303,7 +303,7 @@ where "you can clearly trace" the props.
 Over the years, I've used many technologies that initially appeared to make
 things easier but eventually taught me that they were merely hiding complexity,
 rather than eliminating it. Unfortunately, the `asChild` prop seems to fit that
-category.
+profile.
 
 It solves the problems of the `as` prop by pretending that one element is
 actually two. The type checker has no knowledge of `asChild`'s implicit magic
