@@ -14,7 +14,7 @@ function App() {
         <Button type="submit" variant="primary">
           Submit
         </Button>
-        <Button variant="secondary" disabled>
+        <Button variant="secondary">
           {({ className, disabled, ...restProps }) =>
             exhausted(restProps) && (
               <a
