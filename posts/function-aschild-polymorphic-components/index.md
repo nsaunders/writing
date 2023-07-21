@@ -429,14 +429,16 @@ export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
 The implementation begins with the `forwardProps` object, which will include a
 dynamic `className` based on the incoming `variant` prop value.
 
-Then, it determines whether `children` is a render function:
+Then, it checks whether `children` is a render function:
 
-1. If so, then it calls that function, passing `forwardProps` as the argument,
-   and returns the result.
-2. Otherwise, `children` is simply the button content. Return a `<button>`
-   element, first spreading `forwardProps`, followed by `restProps` (any HTML
-   button props that might have been provided)—and, finally, don't forget to
-   forward `ref` and `children`.
+1. If `children` is indeed a render function, it calls that function and passes
+   the `forwardProps` as an argument. The result of the render function is then
+   returned.
+2. If `children` is not a render function, then that means it contains the
+   content of the button. In this case, the implementation returns a `<button>`
+   element. It spreads the `forwardProps` first, followed by the `restProps`
+   (any HTML button props that might have been provided). Finally, it ensures
+   that the `ref` and `children` are forwarded properly.
 
 ```tsx
 import { ComponentType, forwardRef } from "react";
