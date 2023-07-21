@@ -291,10 +291,9 @@ invalid `disabled` attribute in the resulting HTML, as discussed earlier.
 The implementation of the `asChild` prop (Radix's
 [`Slot` component](https://github.com/radix-ui/primitives/blob/eca6babd188df465f64f23f3584738b85dba610e/packages/react/slot/src/Slot.tsx#L64-L67)),
 utilizes the `cloneElement` function. However, the
-[React docs](https://react.dev/reference/react/cloneElement) warn that "using
-`cloneElement` is uncommon and can lead to fragile code" while "[making] it hard
-to tell how the data flows through your app". The React documentation continues
-on to
+[React documentation](https://react.dev/reference/react/cloneElement) warns that
+"using `cloneElement` is uncommon and can lead to fragile code" while "[making]
+it hard to tell how the data flows through your app". It continues on to
 [recommend the render prop as a "more explicit" alternative](https://react.dev/reference/react/cloneElement#alternatives)
 where "you can clearly trace" the props.
 
