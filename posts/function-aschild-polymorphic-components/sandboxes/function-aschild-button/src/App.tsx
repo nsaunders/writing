@@ -22,7 +22,10 @@ function App() {
               className={className}
               aria-disabled={disabled}
               onClick={e => {
-                if (disabled) e.preventDefault();
+                e.preventDefault();
+                if (!disabled) {
+                  alert("anchor click callback");
+                }
               }}>
               Cancel
             </a>
