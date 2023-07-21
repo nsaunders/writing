@@ -338,7 +338,7 @@ Function asChild looks like from a "client code" perspective. Let's return to
 the polymorphic `Button` once again.
 
 By default, the `Button` component provides the same interface as the HTML
-`button` tag, along with any additional props.
+`button` tag, enhanced with any additional props, e.g. a `variant`.
 
 ```tsx
 <Button type="submit" form="loginForm" variant="primary">
