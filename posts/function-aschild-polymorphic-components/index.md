@@ -334,7 +334,7 @@ variant known as
 ### A quick preview
 
 Before we dive into the implementation, I'd like to offer a glimpse of what
-_Function asChild_ looks like from a "client code" perspective. Let's return to
+Function asChild looks like from a "client code" perspective. Let's return to
 the polymorphic `Button` once again.
 
 By default, the `Button` component provides the same interface as the HTML
