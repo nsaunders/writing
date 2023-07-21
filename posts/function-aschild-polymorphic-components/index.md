@@ -467,8 +467,8 @@ export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
 
 That's all it takes to implement the polymorphic `Button` component!
 
-Due to some quirks of TypeScript, however, how you _use_ the component can make
-a significant difference in terms of type safety. So, to learn how to use it in
+Due to a quirk of TypeScript, however, how you _use_ the component can make a
+significant difference in terms of type safety. So, to learn how to use it in
 the most effective way, read on.
 
 ### Polymorphic component usage
