@@ -626,5 +626,3 @@ future as the TypeScript team improves type checking for prop spreads.
 
 For now, selecting the right approach comes down to "convenience" versus
 _correctness_. If you've made it this far, I know you'll choose wisely.
-
-Thanks for reading, and happy coding!
