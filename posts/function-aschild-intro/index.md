@@ -3,13 +3,13 @@ title: Function asChild
 description:
   How I use a classic React design pattern to build polymorphic components
   safely
-published: 2023-07-25
+published: 2023-07-27
 tags:
   - TypeScript
   - React
 ---
 
-> _Everything should be made as simple as possible, but not simpler._<br/>
+> _Everything should be made as simple as possible, but not simpler._
 > —Albert Einstein
 
 As a design system engineer, my primary goal is to deliver a consistent user
