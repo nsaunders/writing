@@ -219,7 +219,7 @@ consider the private implementation details of the "parent" component—and hope
 they don't change, since the TypeScript compiler can't guarantee compatibility.
 
 To see the problem firsthand, check out
-[this demo](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-polymorphic-components/sandboxes/aschild-prop-no-contract).
+[this demo](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-intro/sandboxes/aschild-prop-no-contract).
 
 ##### Invalid HTML
 
@@ -257,7 +257,7 @@ expected.
 ```
 
 To compare for yourself, have a look at
-[this demo](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-polymorphic-components/sandboxes/aschild-prop-invalid-html).
+[this demo](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-intro/sandboxes/aschild-prop-invalid-html).
 
 ##### No control over prop forwarding
 
@@ -588,8 +588,8 @@ for more information on how to configure your project.
 I invite you to experience Function asChild through a couple of code demos I've
 prepared:
 
-- [Polymorphic `Button`](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-polymorphic-components/sandboxes/function-aschild-button)
-- [Multiple-component composition](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-polymorphic-components/sandboxes/function-aschild-composition)
+- [Polymorphic `Button`](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-intro/sandboxes/function-aschild-button)
+- [Multiple-component composition](https://githubbox.com/nsaunders/writing/tree/master/posts/function-aschild-intro/sandboxes/function-aschild-composition)
 
 ### Reviewing the solution
 
