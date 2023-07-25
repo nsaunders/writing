@@ -3,7 +3,7 @@ title: Function asChild
 description:
   How I use a classic React design pattern to build polymorphic components
   safely
-published: 2023-06-19
+published: 2023-07-25
 tags:
   - TypeScript
   - React
@@ -625,6 +625,6 @@ thoroughness and precision; while hopefully becoming more convenient in the
 future as the TypeScript team improves type checking for prop spreads.
 
 Selecting the right approach really comes down to "convenience" versus
-"correctness". If you've made it this far, I know you'll choose wisely.
+_correctness_. If you've made it this far, I know you'll choose wisely.
 
 Thanks for reading, and happy coding!
