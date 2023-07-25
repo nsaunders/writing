@@ -5,8 +5,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          curl -X POST https://api.github.com/repos/nsaunders/nsaunders.github.io/dispatches \
-          -H 'Accept: application/vnd.github.everest-preview+json' \
-          -u ${{ secrets.GH_ACCESS_TOKEN }} \
-          --data '{"event_type": "dependency_changed", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+      - uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          repository: nsaunders/nsaunders.github.io
+          event-type: content-update
