@@ -624,7 +624,7 @@ On the other hand, Function asChild hides nothing from you. It prioritizes
 thoroughness and precision; while hopefully becoming more convenient in the
 future as the TypeScript team improves type checking for prop spreads.
 
-Selecting the right approach really comes down to "convenience" versus
+For now, selecting the right approach comes down to "convenience" versus
 _correctness_. If you've made it this far, I know you'll choose wisely.
 
 Thanks for reading, and happy coding!
