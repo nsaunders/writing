@@ -383,8 +383,8 @@ started.
 
 The first step is to define the interface between the `Button` component and the
 render function. I usually refer to this as the _forward props_. For a simple
-component whose scope is limited to visual styling, often this will be limited
-to a single `style` or `className` prop.
+component whose scope is limited to visual styling, often this will consist of a
+single `style` or `className` prop.
 
 ```tsx
 export type ButtonForwardProps = {
