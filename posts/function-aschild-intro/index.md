@@ -9,8 +9,8 @@ tags:
   - React
 ---
 
-> _Everything should be made as simple as possible, but not simpler._
-> —Albert Einstein
+> _Everything should be made as simple as possible, but not simpler._ —Albert
+> Einstein
 
 As a design system engineer, my primary goal is to deliver a consistent user
 experience across a large number of products. Succeeding in this requires
@@ -181,10 +181,11 @@ higher degree of reuse than the `as` prop currently allows.
 
 ### The `asChild` prop
 
-The `asChild` prop, popularized by [Radix](https://radix-ui.com), addresses the
-issues of the `as` prop by allowing the component's child element to determine
-how it is rendered. Using `asChild`, here is how the button-as-link use case I
-introduced earlier would be implemented:
+The `asChild` prop, popularized by
+[Radix](https://www.radix-ui.com/docs/primitives/guides/composition), addresses
+the issues of the `as` prop by allowing the component's child element to
+determine how it is rendered. Using `asChild`, here is how the button-as-link
+use case I introduced earlier would be implemented:
 
 ```tsx
 <Button asChild>
