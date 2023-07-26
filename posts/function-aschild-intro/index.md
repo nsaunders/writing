@@ -393,7 +393,7 @@ export type ButtonForwardProps = {
 ```
 
 Next, let's define the `Button` props. The union type forces the client code to
-choose between the default HTML `button` tag interface and the function-as-child
+choose between the default HTML `button` tag interface and the Function asChild
 interface. The `variant` prop is available in either case.
 
 ```tsx
