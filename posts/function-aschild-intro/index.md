@@ -193,9 +193,9 @@ use case I introduced earlier would be implemented:
 </Button>
 ```
 
-To the compiler, this just looks a plain HTML `<a>` element nested as the child
-of some `<Button>` element. This one weird trick should make the TypeScript
-performance and type inference much more predictable.
+To the compiler, this just looks like a plain HTML `<a>` element nested as the
+child of some `<Button>` element. This one weird trick should make the
+TypeScript performance and type inference much more predictable.
 
 And because `<Button>` and `<a>` are now separate elements, a given prop can be
 set explicitly on either one; thus, prop collisions are eliminated.
