@@ -417,6 +417,7 @@ component. The ref forwarding is useful for the default case of a HTML
 
 ```tsx
 import { ComponentType, forwardRef } from "react";
+import { O } from "ts-toolbelt";
 
 export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
   function Button(
@@ -444,6 +445,7 @@ Then, it checks whether `children` is a render function:
 
 ```tsx
 import { ComponentType, forwardRef } from "react";
+import { O } from "ts-toolbelt";
 
 export const Button = forwardRef<HTMLButtonElement, O.Omit<ButtonProps, "ref">>(
   function Button(
