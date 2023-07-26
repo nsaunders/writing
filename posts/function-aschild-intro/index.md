@@ -1,9 +1,10 @@
 ---
 title: Function asChild
 description:
-  How I use a classic React design pattern to build polymorphic components
-  safely
-published: 2023-07-27
+--------------------------------------------------------------------------------
+  Polymorphic components might actually be harmful, but a classic React design
+  pattern helps me to avoid their pitfalls.
+published: 2023-07-27T07:00:00.000Z
 tags:
   - TypeScript
   - React
