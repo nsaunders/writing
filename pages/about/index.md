@@ -1,55 +1,49 @@
-Hello, and thanks for your interest in learning more about me.
+Greetings, and thanks for your interest!
 
-My journey as a programmer began at age 9, when I helped my dad to launch a
-[GeoCities](https://en.wikipedia.org/wiki/Geocities) website dedicated to his
-hobby of [v-drive boats](https://en.wikipedia.org/wiki/V-drive). While we
-started with static content, interest grew quickly, and before long I found
-myself dabbling in PHP and JavaScript in order to build interactive features
-such as chat, guest book, and community forums.
+I'm a passionate programmer with 20 years of professional experience in the
+field of software engineering and web development. At 35 years old, I've
+dedicated a significant portion of my life to programming, which has given me
+exposure to a wide range of various technologies.
 
-After a few years of this (and once I turned 16, making real employment a legal
-proposition), a family friend helped me to join a B2B credit reporting firm as a
-junior programmer. In this role, I transitioned to the Microsoft tech stack (C#,
-ASP.NET, SQL Server, etc.), which presented me with numerous interesting
-opportunities for several years following.
+Over the past several years, I've maintained a consistent focus on front-end
+development. After experimenting with other frameworks like Angular and Svelte,
+as well as Web Components, I decided to focus my efforts exclusively on React.
 
-When I first learned of Single-Page Application architecture circa 2012, I
-immediately latched onto the idea and began seeking out opportunities where I
-could focus primarily or exclusively on front-end development. While continuing
-to leverage ASP.NET for traditional MPAs (as needed) and JSON APIs, I also
-cobbled together a few SPA "frameworks" of my own before picking up Angular 1.
-Much to the annoyance of my colleagues, I also became an early adopter of
-TypeScript around that time.
+Currently, I hold the position of Lead Design System Engineer at a prominent
+company, where I spearhead the development and maintenance of a React component
+library. My role involves building and maintaining components in collaboration
+with my UX design partner and helping product teams to adopt them successfully.
 
-I considered myself quite lucky when I joined a team building a new product with
-the Angular 2 beta in early 2016. While other developers had complained about
-the "rug pull" of an entirely new API, I was excited to learn something new and
-hopefully better. Unfortunately, what I found instead was a framework that
-changed so dramatically from one release to the next that product features
-usually had to be rebuilt entirely from scratch: far too much change even for a
-beta version IMHO. Aside from the obvious practical issues around this, I began
-to realize that volatility is a symptom of complexity and bad design, and I knew
-I had to find better technology, perhaps with a significantly different approach
-than I had experienced up to that point.
+Meanwhile, on personal time, I'm an avid functional programming enthusiast,
+particularly interested in PureScript. I have developed and maintain several
+libraries, including the noteworthy [Tecton](https://purescri.pt/tecton), which
+delivers a uniquely type-safe and flexible CSS authoring experience.
 
-Indeed, I did find an entirely different approach in Functional Programming,
-first [Elm](https://elm-lang.org) and later
-[PureScript](https://purescript.org). I have found PureScript in particular to
-offer a degree of simplicity and power that easily justifies its admittedly
-steep learning curve. As a result, most of my personal programming time is
-dedicated to PureScript; and, even after several years as a hobbyist, I still
-hold onto a dream of using it professionally at some point.
+I've decided to start this technical blog as a platform to share my insights,
+findings, and ideas related to React, TypeScript, and UI/UX—and maybe even a bit
+of functional programming. My motivation for creating this blog stems from a
+desire to document my discoveries for future reference, to help colleagues
+understand my technical reasoning, and to offer valuable insights that can
+accelerate the progress of fellow programmers in their own journeys.
 
-But for now, my day job remains focused on the best _mainstream_ technologies I
-could find for web development, namely React and TypeScript. While learning FP
-on my own time, I have been on a parallel professional journey toward the domain
-of User Experience, and specifically Design Systems. Working in this area has
-afforded me ample opportunity to sharpen design skills and learn directly from
-my very talented UX colleagues. It also uniquely positions me outside of my
-company's engineering organization, providing more space to learn, experiment,
-and grow: I can pursue ideas that work, and easily discard the ones that don't.
+As a technical blogger, I believe in the power of programming to bring joy and
+satisfaction, but I also recognize that it carries its fair share of challenges
+and complexities. I advocate for making good technology choices and sensible
+design decisions to strike the right balance between meeting short-term
+objectives and ensuring long-term maintainability. My approach revolves around
+creating accessible content that emphasizes the importance of learning from
+existing solutions and appreciating the impact our code has on others and our
+future selves.
 
-This site is dedicated to sharing my findings with you, so that hopefully I can
-offer you a more direct path to solving various problems I have already
-encountered and explored. Please have a look around and enjoy, and thanks for
-stopping by!
+Above all, I firmly believe in the value of simplicity in design. Simple designs
+often translate to more reliable and maintainable solutions, and this principle
+guides my work and content creation.
+
+With a pragmatic mindset, I encourage original thinking and challenge
+conventional ideas when they might hinder progress without valid reasons. My
+blog aims to provide readers with alternative perspectives and innovative
+approaches to technical problems, encouraging them to think outside the box and
+explore possibilities others might dismiss.
+
+Thank you for joining me on this journey, and I look forward to sharing my
+knowledge and experiences with you.
