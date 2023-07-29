@@ -3,7 +3,7 @@ title: Function asChild
 description:
   Polymorphic components might actually be harmful, but a classic React design
   pattern helps me to avoid their pitfalls.
-published: 2023-07-27T07:00:00.000Z
+published: 2023-07-31T15:00:00.000Z
 tags:
   - TypeScript
   - React
