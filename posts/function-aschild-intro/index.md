@@ -1,8 +1,8 @@
 ---
 title: Function asChild
 description:
-  Polymorphic components might actually be harmful. How a time-tested React
-  pattern avoids their many pitfalls.
+  Polymorphic components are a good idea with questionable implementation. How I
+  use a time-tested React pattern to overcome their pitfalls.
 published: 2023-07-31T15:00:00.000Z
 tags:
   - TypeScript
