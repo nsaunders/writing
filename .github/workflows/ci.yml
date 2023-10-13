@@ -2,10 +2,6 @@ on:
   push:
     branches: [master]
 jobs:
-  update-vercel:
-    runs-on: ubuntu-latest
-    steps:
-      - run: curl https://api.vercel.com/v1/integrations/deploy/prj_pSCnkS6LwdrahxtRcuUIirALdGBY/jiveitTXb2
   update-github-pages:
     runs-on: ubuntu-latest
     steps:
