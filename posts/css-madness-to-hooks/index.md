@@ -4,7 +4,7 @@ description:
   The technical limitations of inline styles have frustrated web developers for
   literally decades, forcing us to choose between unmaintainable architecture
   and complex workarounds. CSS Variables have unwittingly provided a solution.
-published: 2023-07-31T15:00:00.000Z
+published: 2023-10-17T15:00:00.000Z
 tags:
   - CSS
   - React
