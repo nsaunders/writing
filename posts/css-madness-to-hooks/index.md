@@ -1,9 +1,9 @@
 ---
 title: From CSS madness to CSS Hooks
 description:
-  The technical limitations of inline styles have frustrated web developers for
-  literally decades, forcing us to choose between unmaintainable architecture
-  and complex workarounds. CSS Variables have unwittingly provided a solution.
+  The limited capabilities of inline styles have frustrated web developers for
+  decades, forcing us to choose between unmaintainable architecture and complex
+  workarounds. CSS Variables offer a solution.
 published: 2023-10-17T15:00:00.000Z
 tags:
   - CSS
@@ -84,7 +84,7 @@ within an inline style:
 </style>
 ```
 
-[Live demo](data:text/html,%3Ca%20href%20style%3D%22color%3A%20var%28--hover-on%2C%20%2318659f%29%20var%28--hover-off%2C%20%23003665%29%22%3E%0A%20%20Hover%20me%0A%3C%2Fa%3E%0A%3Cstyle%3E%0A%20%20%2A%20%7B%0A%20%20%20%20--hover-off%3A%20initial%3B%0A%20%20%20%20--hover-on%3A%20%3B%0A%20%20%7D%0A%20%20%3Ahover%20%7B%0A%20%20%20%20--hover-off%3A%20%3B%0A%20%20%20%20--hover-on%3A%20initial%3B%0A%20%20%7D%0A%3C%2Fstyle%3E)
+[Live demo](https://htmlpreview.github.io/?https://github.com/nsaunders/writing/blob/master/posts/css-madness-to-hooks/demo.html)
 
 As you can see, the mechanism is simple, but the syntax leaves much to be
 desired:
