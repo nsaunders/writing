@@ -265,5 +265,3 @@ accordingly.
 
 In the meantime, CSS Hooks gets me about 95% of the way there, and I am pretty
 happy with that for now. I hope that Hooks will make your life easier, too.
-
-Happy coding!
