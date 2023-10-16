@@ -250,12 +250,12 @@ were too comfortable with our workarounds to notice when CSS Variables quietly
 brought us a native solution.
 
 At the same time, I don't want to suggest that CSS Hooks is a cure for CSS
-madness, except perhaps in relative terms. This solution is entirely focused on
-React and JSX frameworks, but I would like all web developers to have a simple
-styling solution regardless of their framework choices. This solution is
-extremely flexible, but it still requires you to make some decisions upfront
-(which hooks you'll need). It is a highly effective treatment, but a step short
-of a cure.
+madness, except perhaps in relative terms. This solution is extremely flexible,
+but it still requires you to make some decisions upfront (which hooks will you
+need). This solution is entirely focused on React and JSX frameworks, but I
+would like all web developers to have a simple styling solution regardless of
+their framework choices. It is a highly effective treatment, but a step short of
+a cure.
 
 The real cure would be explicit browser support for nested rulesets in inline
 styles, like we were supposed to have 20 years ago. Rumor has it,
@@ -263,5 +263,6 @@ styles, like we were supposed to have 20 years ago. Rumor has it,
 And whenever it lands, I hope React's `style` prop API will be updated
 accordingly.
 
-In the meantime, CSS Hooks gets me about 95% of the way there, and I am pretty
-happy with that for now. I hope that Hooks will make your life easier, too.
+In the meantime, CSS Hooks gets me about 95% of the way there; and, after
+experiencing the alternatives, I am pretty happy with that (for now). I hope
+that Hooks will make your life easier, too.
