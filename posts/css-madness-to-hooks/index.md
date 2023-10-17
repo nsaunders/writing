@@ -225,8 +225,9 @@ const [css, hooks] = createHooks({
 
 ## Next steps
 
-If CSS Hooks seems interesting, please go to https://css-hooks.com for more
-information, including a complete guide to getting started.
+If CSS Hooks seems interesting, please go to
+[css-hooks.com](https://css-hooks.com) for more information, including a
+complete guide to getting started.
 
 But before you click away, I would like to ask you for two favors:
 
