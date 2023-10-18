@@ -95,7 +95,7 @@ desired:
    difficult to read. For example, activating a hover effect only when the
    element is enabled looks something like this:
 
-```
+```css
 color: var(--enabled-on, var(--hover-on, #18659f) var(--hover-off, #003665)) var(--enabled-off, gray);
 ```
 
