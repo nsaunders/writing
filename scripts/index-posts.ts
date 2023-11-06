@@ -7,14 +7,10 @@ import readingTime from "reading-time";
 
 const postsDir = path.resolve(import.meta.dir, "..", "posts");
 
-const DateT = Type.Transform(Type.String())
-  .Decode(value => new Date(value))
-  .Encode(value => value.toISOString());
-
 const schema = Type.Object({
   title: Type.String(),
   description: Type.String(),
-  published: DateT,
+  published: Type.Date(),
   tags: Type.Array(Type.String()),
 });
 
