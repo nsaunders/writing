@@ -7,14 +7,22 @@ import readingTime from "reading-time";
 
 const postsDir = path.resolve(import.meta.dir, "..", "posts");
 
+const DateT = Type.Transform(Type.String())
+  .Decode(value => new Date(value))
+  .Encode(value => value.toISOString());
+
 const schema = Type.Object({
   title: Type.String(),
   description: Type.String(),
-  published: Type.Date(),
+  published: DateT,
   tags: Type.Array(Type.String()),
 });
 
-const postDirectories = await fs.readdir(postsDir);
+const postsDirListing = await fs.readdir(postsDir, { withFileTypes: true });
+
+const postDirectories = postsDirListing
+  .filter(x => x.isDirectory())
+  .map(x => x.name);
 
 const postMarkdownFiles = await Promise.all(
   postDirectories.map(dir =>
