@@ -7,7 +7,9 @@ jobs:
   update-vercel:
     runs-on: ubuntu-latest
     steps:
-      - run: curl https://api.vercel.com/v1/integrations/deploy/prj_pSCnkS6LwdrahxtRcuUIirALdGBY/dxSK74uvaP
+      - run:
+          curl
+          https://api.vercel.com/v1/integrations/deploy/prj_pSCnkS6LwdrahxtRcuUIirALdGBY/dxSK74uvaP
   update-github-pages:
     runs-on: ubuntu-latest
     steps:
@@ -16,3 +18,21 @@ jobs:
           token: ${{ secrets.GH_ACCESS_TOKEN }}
           repository: nsaunders/nsaunders.github.io
           event-type: content-update
+  index-posts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: bun setup
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: install dependencies
+        run: bun install
+      - name: index posts
+        run: bun run scripts/index-posts.ts
+      - name: commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: posts/index.json
+          default_author: github_actions
