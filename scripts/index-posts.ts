@@ -21,14 +21,19 @@ const postDirectories = postsDirListing
   .map(x => x.name);
 
 const postMarkdownFiles = await Promise.all(
-  postDirectories.map(dir =>
-    fs.readFile(path.join(postsDir, dir, "index.md"), "utf8"),
-  ),
+  postDirectories.map(async dir => {
+    const content = await fs.readFile(
+      path.join(postsDir, dir, "index.md"),
+      "utf8",
+    );
+    return [dir, content];
+  }),
 );
 
-const posts = postMarkdownFiles.map(file => {
+const posts = postMarkdownFiles.map(([name, file]) => {
   const { data, content } = frontmatter(file);
   return {
+    name,
     ...Value.Decode(schema, data),
     readingTime: readingTime(content).time,
   };
