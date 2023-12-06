@@ -124,7 +124,7 @@ container queries, and even custom selectors.
 ### Usage
 
 Anywhere you find a style object that you'd like to enhance with hooks, you can
-simply "wrap" it in a call to the `hooks` function:
+simply "wrap" it in a call to the `css` function:
 
 ```tsx
 function Button(props: Props) {
@@ -177,7 +177,7 @@ function Button(props: Props) {
 }
 ```
 
-Using the variable fallback trick, the `hooks` function flattens the style
+Using the variable fallback trick, the `css` function flattens the style
 object, reducing it to a form that is compatible with the `style` prop.
 
 ### Generating CSS
