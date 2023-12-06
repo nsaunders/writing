@@ -211,7 +211,7 @@ when pressing down on the previous sibling.
 Here's my configuration:
 
 ```tsx
-const [css, hooks] = createHooks({
+const [hooks, css] = createHooks({
   ...recommended,
 
   previousHover: ":hover + &",
