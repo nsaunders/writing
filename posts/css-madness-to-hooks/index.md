@@ -131,7 +131,7 @@ function Button(props: Props) {
   return (
     <button
       {...props}
-      style={hooks({
+      style={css({
         border: 0,
         margin: 0,
         padding: "0.75rem 1rem",
@@ -155,7 +155,7 @@ function Button(props: Props) {
   return (
     <button
       {...props}
-      style={hooks({
+      style={css({
         border: 0,
         margin: 0,
         padding: "0.75rem 1rem",
