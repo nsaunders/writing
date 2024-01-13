@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run:
-          curl
+          curl -X POST
           https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/96cb6ecb-e8a4-489e-b081-d64fe3955e38
