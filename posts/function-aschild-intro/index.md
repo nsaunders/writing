@@ -109,7 +109,7 @@ Consider two polymorphic components: `Highlight`, which contributes a
 configurable background color to an element, and `Outline`, which similarly adds
 a colored outline around an element.
 
-![Highlight and Outline component examples](images/highlight-outline/highlight-outline.png)
+![Highlight and Outline component examples](assets/images/highlight-outline/highlight-outline.png)
 
 ```tsx
 <>
@@ -120,7 +120,7 @@ a colored outline around an element.
 
 You can combine the two using the `as` prop.
 
-![Highlight and Outline combination](images/highlight-outline/combo-monochrome.png)
+![Highlight and Outline combination](assets/images/highlight-outline/combo-monochrome.png)
 
 ```tsx
 <Highlight as={Outline} color="yellow">
@@ -130,7 +130,7 @@ You can combine the two using the `as` prop.
 
 But what if you want a two-tone effect?
 
-![Two-tone effect using the Highlight and Outline components](images/highlight-outline/combo-two-tone.png)
+![Two-tone effect using the Highlight and Outline components](assets/images/highlight-outline/combo-two-tone.png)
 
 ```tsx
 <Highlight as={Outline} color="hotpink" color="lightblue">
@@ -146,7 +146,7 @@ compile.
 Now let's return for a moment to the monochromatic combination that actually
 works.
 
-![Highlight and Outline combination](images/highlight-outline/combo-monochrome.png)
+![Highlight and Outline combination](assets/images/highlight-outline/combo-monochrome.png)
 
 By default, this renders a generic `<div>` element. But what if you need to
 render a `<button>` element instead?
@@ -560,7 +560,7 @@ function exhausted(x: Record<any, never>) {
 
 For example, here's what happens if you forget about the `className` prop:
 
-![A TypeScript error surfaced when the props are not fully destructured](images/editor-help/not-exhausted.png)
+![A TypeScript error surfaced when the props are not fully destructured](assets/images/editor-help/not-exhausted.png)
 
 As I mentioned earlier, it's still possible to destructure a prop and forget to
 forward it. Next, I'll show you an additional measure to prevent this common
@@ -580,7 +580,7 @@ For this, I simply recommend the ESLint rule
 With this rule enabled, here's what happens if you forget to forward the
 `className` prop:
 
-![An ESLint error showing that one of the props is unused](images/editor-help/unused-prop.png)
+![An ESLint error showing that one of the props is unused](assets/images/editor-help/unused-prop.png)
 
 If you aren't already using ESLint, see
 [typescript-eslint's Getting Started guide](https://typescript-eslint.io/getting-started)
