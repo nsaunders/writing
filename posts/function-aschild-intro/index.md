@@ -3,6 +3,7 @@ title: Function asChild
 description:
   The pitfalls of polymorphic components, and how I use a time-tested React
   design pattern to overcome them
+image: assets/images/cover.jpg
 published: 2023-07-31T15:00:00.000Z
 tags:
   - TypeScript

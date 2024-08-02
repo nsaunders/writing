@@ -4,6 +4,7 @@ description:
   The limited capabilities of inline styles have frustrated web developers for
   decades, forcing us to choose between unmaintainable architecture and complex
   workarounds. CSS Variables offer a solution.
+image: assets/images/cover.jpg
 published: 2023-10-17T12:00:00.000Z
 tags:
   - CSS
@@ -96,7 +97,10 @@ desired:
    element is enabled looks something like this:
 
 ```css
-color: var(--enabled-on, var(--hover-on, #18659f) var(--hover-off, #003665)) var(--enabled-off, gray);
+color: var(--enabled-on, var(--hover-on, #18659f) var(--hover-off, #003665)) var(
+    --enabled-off,
+    gray
+  );
 ```
 
 Moreover, the supporting style sheet, while compact and highly reusable, is
@@ -177,8 +181,8 @@ function Button(props: Props) {
 }
 ```
 
-Using the variable fallback trick, the `css` function flattens the style
-object, reducing it to a form that is compatible with the `style` prop.
+Using the variable fallback trick, the `css` function flattens the style object,
+reducing it to a form that is compatible with the `style` prop.
 
 ### Generating CSS
 
