@@ -4,7 +4,7 @@ description:
   The limited capabilities of inline styles have frustrated web developers for
   decades, forcing us to choose between unmaintainable architecture and complex
   workarounds. CSS Variables offer a solution.
-image_src: assets/images/cover.jpg
+image_src: assets/images/cover.webp
 image_alt: A 19th-century inventor standing next to a Rube Goldberg machine
 published: 2023-10-17T12:00:00.000Z
 tags:
