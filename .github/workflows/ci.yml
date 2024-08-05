@@ -8,4 +8,4 @@ jobs:
     steps:
       - run:
           curl -X POST
-          https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/96cb6ecb-e8a4-489e-b081-d64fe3955e38
+          https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/c980cb2e-ca5f-41bb-bd18-61b71f2d489a
