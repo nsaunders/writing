@@ -14,4 +14,4 @@ jobs:
           -H "Authorization: Bearer ${{secrets.GH_ACCESS_TOKEN}}" \
           -d '{"ref":"master"}' \
           --fail-with-body \
-          https://api.github.com/repos/nsaunders/nsaunders.dev/actions/workflows/build.yml/dispatches
+          https://api.github.com/repos/nsaunders/nsaunders.dev/actions/workflows/.github%2Fworkflows%2Fbuild.yml/dispatches
