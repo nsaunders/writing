@@ -86,7 +86,7 @@ within an inline style:
 </style>
 ```
 
-[Live demo](https://htmlpreview.github.io/?https://github.com/nsaunders/writing/blob/master/posts/css-madness-to-hooks/demo.html)
+[Live demo](https://htmlpreview.github.io/?https://github.com/nsaunders/writing/blob/master/posts/css-madness-to-hooks/assets/demo.html)
 
 As you can see, the mechanism is simple, but the syntax leaves much to be
 desired:
