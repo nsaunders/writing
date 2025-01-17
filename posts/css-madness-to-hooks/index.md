@@ -7,27 +7,27 @@ description:
 image_src: assets/images/cover.webp
 image_alt: A 19th-century inventor standing next to a Rube Goldberg machine
 published: 2023-10-17T12:00:00.000Z
+updated: 2025-01-17T12:00:00.000Z
 tags:
   - CSS
   - React
 ---
 
-In the component era, the close relationship between HTML and CSS demands—from a
-maintainability perspective at least—colocation. Some people still believe in a
-"separation of concerns"; but, as a pragmatist, I only see a technical boundary.
-One that I, like many (most?) other React developers, would prefer didn't exist.
+In the component era, the close relationship between HTML and CSS demands
+colocation. Some people still cling to the idea of a "separation of concerns";
+but, as a pragmatist, I only see a technical boundary. One that I, like many
+(most?) other React developers, would prefer didn't exist.
 
 The most basic way to colocate HTML and CSS is rooted in the HTML standard
 itself in the form of the
 [`style` attribute](https://html.spec.whatwg.org/multipage/dom.html#the-style-attribute).
 Web frameworks universally support the `style` attribute, and React even
-provides an additional layer of "syntactic sugar" convenience known as
+provides an additional layer of syntactic sugar convenience known as
 [style objects](https://react.dev/learn/javascript-in-jsx-with-curly-braces#using-double-curlies-css-and-other-objects-in-jsx).
-In short, the `style` attribute, often referred to as _inline styles_, "just
-works". Natively.
+In short, the `style` attribute, aka inline styles, "just works". Natively.
 
-Unfortunately, some inherent "feature gaps" have made inline styles unsuitable
-for most real-world use cases. Something as trivial as a
+Unfortunately, some inherent feature gaps have made inline styles unsuitable for
+most real-world use cases. Something as trivial as a
 [hover effect](https://stackoverflow.com/questions/131653/inline-style-to-act-as-hover-in-css)
 can't be done with inline styles because they lack
 [pseudo-classes](https://www.w3.org/TR/selectors-4/#pseudo-classes). Responsive
@@ -40,9 +40,10 @@ but, tragically, the browser vendors never delivered.
 
 Today, the simplicity of inline styles is easily outweighed by their
 limitations, a situation that has fueled much resentment and pushed developers
-toward heavy-handed workarounds like CSS-in-JS, atomic CSS, and "zero-runtime"
-solutions (each one making different tradeoffs but accepting some form of
-significant complexity nevertheless). _CSS madness._
+toward clumsy workarounds like CSS-in-JS, atomic CSS, and "zero-runtime"
+solutions, each one making different tradeoffs but accepting some form of
+significant complexity nevertheless (in addition to the perils of the cascade).
+_CSS madness._
 
 Personally, I've engaged in CSS madness for several years, even creating a few
 workarounds of my own. But a recent discovery has dramatically changed the
@@ -52,26 +53,30 @@ CSS Variables are programmable.
 
 ## The fallback trick
 
-The `var()` function, used to access the value of a variable, allows you to
+The CSS `var` function, used to access the value of a variable, allows you to
 provide a fallback value to use in case that variable isn't set. For example,
 `var(--error-color, red)` represents the value of `--error-color`, if set, or
 otherwise the fallback value of `red`.
 
-The programmability I mentioned is built upon this simple fallback mechanism.
+Believe it or not, the programmability I mentioned is built upon this simple
+fallback mechanism.
 
-When the variable is set to `initial`, the fallback value is used instead.
+When the variable is set to `initial`, the fallback value is used instead
+because `initial` is considered a _guaranteed invalid_ value,
 
 When the variable is set to an empty value, the empty value is used rather than
-the fallback value. The empty value has no effect on the declaration.
+the fallback value. The empty value has no effect on the declaration, just as
+concatenating an empty string would leave the original string unchanged.
 
-Thus, a pair of variables can be used to toggle between arbitrary fallback
-values depending on some condition, like a matching selector or at-rule.
+Thus, a pair of variables can be used with these special values to toggle
+between arbitrary fallback values depending on some condition, like a matching
+selector or at-rule.
 
 Armed with this knowledge, you can do the unthinkable—implement a hover effect
 within an inline style:
 
 ```html
-<a href style="color: var(--hover-on, #18659f) var(--hover-off, #003665)">
+<a href style="color: var(--hover-on, #f00) var(--hover-off, #00f)">
   Hover me
 </a>
 <style>
@@ -93,22 +98,21 @@ desired:
 
 1. It is difficult to parse the value of the `color` declaration at a glance.
 
-2. Combining multiple "state variables" requires nesting, which is tedious and
+2. Combining multiple state variables requires nesting, which is tedious and
    difficult to read. For example, activating a hover effect only when the
    element is enabled looks something like this:
 
+<!--prettier-ignore-start-->
 ```css
-color: var(--enabled-on, var(--hover-on, #18659f) var(--hover-off, #003665)) var(
-    --enabled-off,
-    gray
-  );
+color: var(--enabled-on, var(--hover-on, #18659f) var(--hover-off, #003665)) var(--enabled-off, gray);
 ```
+<!--prettier-ignore-end-->
 
 Moreover, the supporting style sheet, while compact and highly reusable, is
 still just boilerplate that I'm sure you'd rather not have to maintain.
 
-But don't worry—I can offer a solution that addresses all of these points,
-helping to make this approach not only simple, but convenient.
+But don't worry—I can offer a solution that addresses these issues, helping to
+make this approach not only simple, but convenient.
 
 ## Hooks (not the React kind)
 
@@ -123,110 +127,130 @@ So, I set about building CSS Hooks, aiming to fill the feature gaps of the
 
 A _hook_ allows you to tap into a CSS feature that is normally inaccessible
 within inline styles. The canonical first example is the `:hover` pseudo-class;
-but the possibilities include the full range of pseudo-classes, media queries,
-container queries, and even custom selectors.
+but the possibilities include the full range of pseudo-classes; media,
+container, and feature queries; and even custom selectors.
 
-### Usage
+### How it works
 
-Anywhere you find a style object that you'd like to enhance with hooks, you can
-simply "wrap" it in a call to the `css` function:
+#### Creating hooks
+
+The first step is to create the hooks you'll use when building your components.
+
+```typescript
+// src/css.ts
+
+import { createHooks } from "@css-hooks/react";
+
+const { on, and, or, not, styleSheet } = createHooks(
+  "&:hover",
+  "&:focus-visible",
+  "&:disabled"
+);
+```
+
+#### Adding the style sheet
+
+As you saw earlier when I demonstrated the variable fallback trick, it's
+supported by a minimal style sheet. The `styleSheet` function returned above
+generates the content of that style sheet for you based on the configured hooks.
+All you need to worry about is adding it to the document, e.g. via a `<style>`
+element at the entry point of your app:
 
 ```tsx
-function Button(props: Props) {
+// src/main.tsx
+
+import { createRoot } from "react-dom/client";
+import { App } from "./app.tsx";
+import { styleSheet } from "./css.ts";
+
+createRoot(document.getElementById("root")!).render(
+  <>
+    <style dangerouslySetInnerHTML={{ __html: styleSheet() }} />
+    <App />
+  </>
+);
+```
+
+#### Using the hooks
+
+Now you're ready to use the hooks. For example, the `&:hover` and `&:disabled`
+hooks configured earlier can be used to apply their respective styles
+conditionally:
+
+```tsx
+// src/button.tsx
+
+import type { ComponentProps } from "react";
+import { pipe } from "remeda";
+import { on } from "./css.ts";
+
+export function Button(props: Omit<ComponentProps<"button">, "style">) {
   return (
     <button
+      style={pipe(
+        {
+          background: "#333",
+          color: "#fff"
+        },
+        on("&:hover", {
+          background: "#666"
+        }),
+        on("&:disabled", {
+          background: "#333",
+          cursor: "not-allowed"
+        })
+      )}
       {...props}
-      style={css({
-        border: 0,
-        margin: 0,
-        padding: "0.75rem 1rem",
-        fontFamily: "sans-serif",
-        fontSize: "1rem",
-        background: "#333",
-        color: "#fff",
-        borderRadius: "0.5rem",
-      })}
     />
   );
 }
 ```
 
-From there, it's possible to use the hooks via nested style objects. For
-example, you might want to apply some declarations when the `hover` or
-`disabled` hooks are activated:
+Note that the `pipe` function is a generic solution for function composition. If
+you're interested to learn more about how it works, Nick Scialli provides an
+excellent overview in his post
+[How to Use Pipe in JavaScript](https://typeofnan.dev/how-to-use-pipe-the-pipeline-operator-in-javascript/).
+
+Meanwhile, the `on` function merges each successive ruleset (style object) with
+the previous one. Each ruleset's values are applied conditionally using the
+variable fallback trick, with the preceding ruleset providing the fallback
+values. The end result is a flat style object that is compatible with the
+`style` prop.
+
+You can also use the `and`, `or`, and `not` functions to create complex
+conditions by combining hooks using boolean logic. For example, you can apply a
+background color on hover or focus, only when the button is not disabled:
 
 ```tsx
-function Button(props: Props) {
+// src/button.tsx
+
+import type { ComponentProps } from "react";
+import { pipe } from "remeda";
+import { on, and, or, not } from "./css.ts";
+
+export function Button(props: Omit<ComponentProps<"button">, "style">) {
   return (
     <button
+      style={pipe(
+        {
+          background: "#333",
+          color: "#fff"
+        },
+        on(and(or("&:hover", "&:focus-visible"), not("&:disabled")), {
+          background: "#666"
+        }),
+        on("&:disabled", {
+          cursor: "not-allowed"
+        })
+      )}
       {...props}
-      style={css({
-        border: 0,
-        margin: 0,
-        padding: "0.75rem 1rem",
-        fontFamily: "sans-serif",
-        fontSize: "1rem",
-        background: "#333",
-        color: "#fff",
-        borderRadius: "0.5rem",
-        hover: {
-          color: "#666",
-        },
-        disabled: {
-          color: "#999",
-          cursor: "not-allowed",
-        },
-      })}
     />
   );
 }
 ```
 
-Using the variable fallback trick, the `css` function flattens the style object,
-reducing it to a form that is compatible with the `style` prop.
-
-### Generating CSS
-
-As you saw earlier when I demonstrated the variable fallback trick, it is
-supported by a small static style sheet. The CSS Hooks system takes care of
-generating the content of that style sheet for you. All you need to worry about
-is adding it to the document, e.g. via a `<style>` element in the root component
-of your app.
-
-### Configuration (custom hooks)
-
-CSS Hooks ships with ~30 "recommended" hooks, including the basics like `hover`,
-`active`, `focus`, and `disabled`. But you can easily extend or replace them
-with your own custom hooks.
-
-This flexibility lets you decide the best way to approach concerns like:
-
-- **Dark mode**. Will you use a `prefers-color-scheme` media query, a `dark`
-  class, a combination, or something else?
-- **Responsive design**. Are you ready to start using container queries, or do
-  you want to stick with media queries?
-- **Breakpoints**. Where do you draw the line between desktop and mobile
-  devices?
-
-It also helps you address less-common use cases without resorting to external
-CSS. For example, in a recent project, I created a hook that is activated when
-hovering over the element's previous sibling, and another one that is activated
-when pressing down on the previous sibling.
-
-Here's my configuration:
-
-```tsx
-const [hooks, css] = createHooks({
-  ...recommended,
-
-  previousHover: ":hover + &",
-  previousActive: ":active + &",
-
-  dark: "@media (prefers-color-scheme: dark)",
-  mobile: "@media (max-width: 499px)",
-  desktop: "@media (min-width: 500px)",
-});
-```
+This ability to combine hooks allows you to create simple, generic hooks that
+you can reuse across a wide range of use cases.
 
 ## Next steps
 
@@ -236,7 +260,7 @@ complete guide to getting started.
 
 But before you click away, I would like to ask you for two favors:
 
-1. As a brand-new project, CSS Hooks has very limited exposure. Would you please
+1. As a new project, CSS Hooks has very limited exposure. Would you please
    consider [adding a star](https://github.com/css-hooks/css-hooks) on GitHub to
    help others find it?
 2. If you can offer any feedback or have ideas for additional framework
@@ -247,28 +271,19 @@ Thanks in advance for your help.
 
 ## Wrapping up
 
-As HTML templating and component-oriented architecture have gained traction over
-the years—making traditional CSS architecture mostly redundant—the lack of
-native browser support for inline style rules created a vacuum that many
-talented developers have rightly attempted to fill. Each solution has had some
-merit and been "good enough" under the right conditions. Perhaps that is why we
-were too comfortable with our workarounds to notice when CSS Variables quietly
-brought us a native solution.
+The rise of component architecture has driven an eager search for styling
+solutions that can easily be embedded in (or at least colocated with) markup,
+Many interesting solutions have emerged approximating inline styles. They have
+seen huge adoption for good reason. Combined with widely-held technical
+assumptions, they have made it easy for the community to forget about inline
+styles and overlook the potential of the variable fallback trick.
 
-At the same time, I don't want to suggest that CSS Hooks is a cure for CSS
-madness, except perhaps in relative terms. This solution is extremely flexible,
-but it still requires you to make some decisions upfront (which hooks will you
-need). This solution is entirely focused on React and JSX frameworks, but I
-would like all web developers to have a simple styling solution regardless of
-their framework choices. It is a highly effective treatment, but a step short of
-a cure.
+But now that we know how to extend the capabilities of inline styles, it's
+important to recognize when an alternative is really just a heavy-handed
+workaround founded on outdated assumptions. Building browser-based apps is
+complicated enough without having to battle cascade defects, learn proprietary
+styling syntax, configure extra CSS build steps, etc.
 
-The real cure would be explicit browser support for nested rulesets in inline
-styles, like we were supposed to have 20 years ago. Rumor has it,
-[this might be on the way](https://twitter.com/LeaVerou/status/1665413012323270659).
-And whenever it lands, I hope React's `style` prop API will be updated
-accordingly.
-
-In the meantime, CSS Hooks gets me about 95% of the way there; and, after
-experiencing the alternatives, I am pretty happy with that (for now). I hope
-that Hooks will make your life easier, too.
+By enhancing inline styles rather than replacing them with an entirely different
+system, CSS Hooks aims to be less of a workaround and more of a
+[bridge to the future](https://x.com/markdalgleish/status/1732224401553432900).
