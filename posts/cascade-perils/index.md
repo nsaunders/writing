@@ -1,6 +1,8 @@
 ---
 title: The perils of the cascade
-description: Why I'm embracing inline styles and so should you
+description:
+  The cascade in CSS creates unnecessary chaos and unpredictability. Inline
+  styles offer a simpler, more reliable path forward.
 image_src: assets/images/cover.webp
 image_alt: A person being washed down a cascade waterfall
 published: 2025-02-01T12:00:00.000Z
