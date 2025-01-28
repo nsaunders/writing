@@ -1,8 +1,9 @@
 ---
 title: The perils of the cascade
 description:
-  The cascade in CSS creates unnecessary chaos and unpredictability. Inline
-  styles offer a simpler, more reliable path forward.
+  The cascade in CSS adds extra layers of unpredictability and creates
+  unnecessary cognitive overhead. Inline styles offer a simpler, more reliable
+  styling approach.
 image_src: assets/images/cover.webp
 image_alt: A person being washed down a cascade waterfall
 published: 2025-02-01T12:00:00.000Z
@@ -80,7 +81,7 @@ proof-of-concept I mentioned earlier, where each version includes its own global
 CSS reset.
 
 Likewise, I've worked on many projects in the past that involved integrating
-"modern" features into existing applications, often resulting in clashes between
+modern features into existing applications, often resulting in clashes between
 their respective style sheets due to lack of scoping. For example, one time I
 needed to integrate an app header, built with a component library in React, into
 a legacy product. The links in the app header were styled using a `.nav-link`
@@ -107,10 +108,10 @@ for the library maintainer and complicates the upgrade path for the client.
 
 The cascade allows clients to bypass a component's API (props). Instead of
 following the rules of interaction, the client can reach in and modify the
-private implementation details of the component, forcing it into alignment with
-the specific use case at hand. In the short term, this power may seem useful,
-but eventually it will lead to defects when component implementation details
-change unexpectedly.
+private implementation details of the component, unsafely coercing it into
+alignment with the specific use case at hand. In the short term, this power may
+seem useful, but eventually it will lead to defects when component
+implementation details change unexpectedly.
 
 As a component library maintainer, I would much rather update a component's API
 to meet the client's need than for the client to modify its internals. If I were
@@ -120,26 +121,27 @@ changes due to the increased risk of a regression.
 ## Inline styles offer a solution
 
 In the words of Leonardo da Vinci, "Simplicity is the ultimate sophistication."
-Inline styles embody this principle by addressing the root causes of
-cascade-related issues:
+Inline styles embody this principle by completely sidestepping cascade-related
+issues:
 
 1. **Eliminating complexity**. Inline styles provide a straightforward and
    deterministic styling mechanism that doesn't require you to think about
    source order, specificity, or cascade layers.
 
-1. **Scoped by default**. Inline styles naturally avoid global scope issues
-   since they apply only to the element they are defined on.
+1. **Inherent scope**. Inline styles naturally avoid global scope issues since
+   they apply only to the element on which they are defined.
 
-1. **Immutable by design**. By encapsulating styles within the component, inline
-   styles reinforce API boundaries and protect against unexpected overrides.
+1. **Immutable by default**. By encapsulating styles within the component,
+   inline styles reinforce API boundaries and protect against unexpected
+   overrides.
 
 ### Addressing limitations
 
 The reason most people avoid inline styles is that they don't explicitly support
-conditional styling (like a hover effect or responsive design) due to their lack
-of support for pseudo-classes, media queries, etc. However, a CSS variable trick
-I learned a couple of years ago actually does offer a solution to these
-technical limitations. To learn more, please see my post
+conditional styling (like a hover effect or responsive behavior) due to their
+lack of support for pseudo-classes, media queries, etc. But it turns out that an
+obscure CSS variable trick offers a solution to these technical limitations. To
+learn more, please read my post
 [From CSS madness to CSS Hooks](../css-madness-to-hooks/).
 
 ## Wrapping up
@@ -147,9 +149,9 @@ technical limitations. To learn more, please see my post
 People often assume their chosen styling solution is immune to cascade defects
 because it incorporates scoping mechanisms or cascade layers. In reality, these
 are only partial mitigations, remaining vulnerable to high-specificity selectors
-and unlayered styles. By adopting inline styles, you can sidestep the
-complexities and pitfalls of the cascade entirely, embracing a simpler, more
-maintainable approach to styling.
+and unlayered styles. By adopting inline styles, you can avoid the complexities
+and pitfalls of the cascade entirely, embracing a simpler, more maintainable
+approach to styling.
 
 Inline styles may not be the right choice for every project, but for large-scale
 applications and reusable component libraries, they provide clarity,
