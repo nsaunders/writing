@@ -24,8 +24,9 @@ styles, and you should too. Here's why.
 ### Complex style resolution algorithm
 
 CSS may seem simple at first, but at any non-trivial scale the complexity of how
-styles are resolved becomes painfully apparent. Understanding which ruleset will
-apply requires reasoning about source order,
+styles are resolved becomes painfully apparent. Understanding which
+[ruleset](https://developer.mozilla.org/en-US/docs/Web/CSS/Syntax#css_rulesets)
+will apply requires reasoning about source order,
 [specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity), and
 [cascade layer](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Cascade_layers)
 precedence. With manually-authored CSS, this is often difficult and requires
