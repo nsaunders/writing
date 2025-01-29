@@ -6,7 +6,7 @@ description:
   styling approach.
 image_src: assets/images/cover.webp
 image_alt: A person being washed down a cascade waterfall
-published: 2025-02-01T12:00:00.000Z
+published: 2025-01-29T12:00:00.000Z
 tags:
   - CSS
 ---
