@@ -42,8 +42,8 @@ Today, the simplicity of inline styles is easily outweighed by their
 limitations, a situation that has fueled much resentment and pushed developers
 toward clumsy workarounds like CSS-in-JS, atomic CSS, and "zero-runtime"
 solutions, each one making different tradeoffs but accepting some form of
-significant complexity nevertheless (in addition to the perils of the cascade).
-_CSS madness._
+significant complexity nevertheless (in addition to the
+[perils of the cascade](../cascade-perils)). _CSS madness._
 
 Personally, I've engaged in CSS madness for several years, even creating a few
 workarounds of my own. But a recent discovery has dramatically changed the
